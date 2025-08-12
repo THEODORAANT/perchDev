@@ -213,11 +213,13 @@ if (PERCH_RUNWAY) {
             </div>
             <div class="submit-bar-actions">
             <?php 
-                echo $Form->submit('btnsubmit', 'Save changes'); 
-                
+                echo $Form->submit('btnsubmit', 'Save changes');
+
                 if ($Region->regionMultiple()=='1') {
                     echo ' <input type="submit" name="add_another" value="'.PerchUtil::html(PerchLang::get('Save & add another')).'" id="add_another" class="button button-simple" />';
                 }
+
+                echo ' <button type="button" id="btnGenerateAI" class="button button-simple">'.PerchUtil::html(PerchLang::get('Generate with AI')).'</button>';
                 
                 
                 
@@ -252,3 +254,18 @@ if (PERCH_RUNWAY) {
         ?>
     
 </form>
+<script>
+document.getElementById('btnGenerateAI').addEventListener('click', function(e){
+    e.preventDefault();
+    var prompt = window.prompt('Enter prompt for AI content');
+    if(!prompt) return;
+    fetch('<?php echo PERCH_LOGINPATH; ?>/core/apps/content/ai/generate.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({prompt: prompt})
+    }).then(function(r){return r.json();}).then(function(data){
+        var textarea = document.querySelector('#content-edit textarea');
+        if(textarea) textarea.value = data.content;
+    });
+});
+</script>
