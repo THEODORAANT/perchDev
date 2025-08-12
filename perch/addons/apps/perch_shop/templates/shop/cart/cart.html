@@ -1,0 +1,210 @@
+<div class="wrapper cols2-nav-right">	
+	<div class="primary-content">
+
+<perch:if id="product_count" match="gt" value="0">
+	
+	<h1 class="text-uppercase text-center mt-8 basket">Basket (<perch:shop id="item_count" />) </h1>
+    <div class="text-center">
+        <img src="images/line.png">
+    </div>
+
+	<!-- <h1>Your cart (<perch:shop id="item_count" />)</h1> -->
+	<perch:form id="cart" app="perch_shop">
+		
+		<perch:input type="submit" value="Update" hidden="true" aria-hidden="true" />
+		
+		<div class="container-fluid basket-container mt-2">
+			<div class="row">
+				<div class="col-lg-8">
+					<table class="cart mt-5">
+						<tr>
+							<!-- <th></th> -->
+							<th>Product Name</th>
+							<th>Quantity</th>
+							<th>Price</th>
+							<th>Total</th>
+							<th></th>
+						</tr>
+						<perch:cartitems>
+
+							<tr>
+								<!-- <td><perch:cartitem id="image" type="image" width="80" height="80" density="1.6" crop="true" output="tag" /></td> -->
+								<td>
+									<perch:cartitem id="image" type="image" width="80" height="80" density="1.6" crop="true" output="tag">
+										<h3 class=""><perch:cartitem id="title" /></h3></perch:cartitem>
+									 
+									<p><i><perch:cartitem id="variant_desc" /></i></p>
+		
+								</td>
+								<td><perch:input id="qty:<perch:cartitem id="identifier" />" value="<perch:cartitem id="quantity" />" type="number" min="0" /></td>
+								<td class="text-left"><perch:cartitem id="price_without_tax" /></td>
+								<td class="text-left"><perch:cartitem id="total_without_tax_formatted" /></td>
+								<td>
+									<button type="submit" class="remove_cart" name="del:<perch:cartitem id="identifier" />" value="1">
+									<img src="../../../../../../../images/delete-icon.png" width="30" height="30">
+									</button>
+								</td>
+							</tr>
+						</perch:cartitems>
+						
+						<perch:if id="total_discounts" match="gt" value="0.00">
+							<tr class="total">
+								<th colspan="5">
+									Discount (<perch:shop id="discount_code" />)
+								</th>
+								<td class="money">
+									<perch:shop id="total_discounts_formatted" />
+								</td>
+							</tr>
+							<tr class="total">
+								<th colspan="5">
+									Total
+								</th>
+								<td class="money">
+									<perch:shop id="total_items_discounted_formatted" />
+									
+									<!-- <button type="submit" class="remove_cart" name="del:<perch:cartitem id="identifier" />" value="1">
+										<img src="../../../../../../../images/delete-icon.png" width="30" height="30">
+									</button> -->
+								</td>
+							</tr>
+						<perch:else />
+						
+
+					</table>
+				</div>
+			
+
+				<div class="col-lg-4 col-md-4 col-sm-4 order-summary">
+					<h4 class="text-center text-uppercase order mt-4">Order summary </h4>
+					<div class="text-center">
+						<img src="images/line.png" width="50" height="5">
+					</div>
+					<div class="container">
+						<h5 class="mt-3"> Sub-total <span class="float-right font-weight-bold"> <perch:shop id="total_items_formatted" /> </span> </h5>
+						<h5 class="text-uppercase vat mt-3"> Vat 20%<span class="float-right font-weight-bold"> <perch:shop id="total_tax_formatted" /> </span> </h5>
+						<h5 class="text-uppercase font-weight-bold vat mt-3"> Total<span class="float-right font-weight-bold"> <perch:shop id="grand_total_formatted" /> </span> </h5>
+						<p class="text-center mt-4 gift-card">Gift cards, discount codes & delivery charges can be applied at checkout.</p>
+						<div class="containertext-center mb-5">
+							<a href="checkout.php" class="btn btn-info text-uppercase">Continue to checkout</a>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+
+	
+				<!-- <tr class="total">
+					<th colspan="5">
+						Total
+					</th>
+					<td class="money">
+						<perch:shop id="total_items_formatted" />
+					</td>
+				</tr>
+			</perch:if>
+			<tr class="total">
+				<th colspan="5">
+					Tax
+				</th>
+				<td class="money">
+					<perch:shop id="total_tax_formatted" />
+				</td>
+			</tr>
+			<tr class="total">
+				<th colspan="5">
+					Grand total
+				</th>
+				<td class="money">
+					<perch:shop id="grand_total_formatted" />
+				</td>
+			</tr> -->
+
+		<!-- <div class="discount">
+			<perch:label for="discount">
+				Discount code
+				<perch:input type="text" id="discount_code" />
+			</perch:label>
+		</div> -->
+
+		<!-- <perch:input type="submit" value="Update" /> -->
+
+		
+	</perch:form>
+<!-- 
+	<p>
+		<a href="checkout">Checkout now</a>
+	</p>
+	
+	  -->
+	</div>
+
+<perch:else />
+	<h1 class="text-uppercase text-center mt-8 basket">Basket</h1>
+	<div class="text-center">
+		<img src="images/line.png">
+	</div>
+	<h3 class="text-center mt-3">Your basket is empty.</h3>
+
+</perch:if>
+
+</div>
+</div>
+
+
+
+
+
+<style>
+.cart {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.cart th {
+	font-weight: 600;
+}
+
+.cart td,
+.cart th {
+	border: 1px solid #efefef;
+	vertical-align: top;
+	padding: 3px;
+}
+
+.cart .total,
+.cart .money {
+	text-align: right;
+}
+
+.discount {
+	max-width: 300px;
+}
+
+.desc {
+	font-size: small;
+}
+
+b {
+	font-weight: 600;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+i {
+	font-style: italic;
+	font-size: small;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.remove_cart {
+	background: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-decoration: underline;
+}
+
+input[type=number] {
+	width: 40px;
+}
+</style>

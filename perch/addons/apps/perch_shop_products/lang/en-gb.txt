@@ -1,0 +1,22 @@
+{
+    "lang": "en-gb",
+    "Products": "Products",
+    "Delete Product": "Delete Product",
+    "Delete Brand": "Delete Brand",
+    "Delete Option": "Delete Option",
+    "Manage Products": "Manage Products",
+    "Listing all products": "Listing all products",
+    "Add product": "Add product",
+    "Are you sure?": "Are you sure?",
+    "SKU": "SKU",
+    "Title": "Title",
+    "Stock": "Stock",
+    "Price": "Price",
+    "": "",
+    "Edit Product": "Edit Product",
+    "Creating a New Product": "Creating a New Product",
+    "Product": "Product",
+    "Save": "Save",
+    "or": "or",
+    "Cancel": "Cancel"
+}

@@ -1,0 +1,10 @@
+<perch:shop id="title" type="text" label="Title" required="true" help="e.g. Size, Colour" />
+<perch:shop id="precendence" type="number" label="Precendence" required="true" default="1" step="1" size="s" min="1" />
+
+<!--* Don't change this repeater - it's needed for editing options. *-->
+<perch:repeater id="options" label="Values" divider-before="Option values">
+	<perch:shop id="title" type="text" label="Option" data-sku="title,skucode,id" />
+	<perch:shop id="skucode" type="text" label="SKU code" data-code="1" />
+	<perch:shop id="id" type="editcontrol" edit-control="true" />
+</perch:repeater>
+<!--* / don't change *-->

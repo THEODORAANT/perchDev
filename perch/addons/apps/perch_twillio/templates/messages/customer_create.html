@@ -1,0 +1,50 @@
+<perch:form id="register" method="post" app="perch_twillio" class="form-container">
+	
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<h3 class="text-uppercase font-weight-bold mt-4">Register for Getting Notifications</h3>
+		</div>
+	</div>
+
+	<fieldset>
+		   <!-- <legend>About you</legend> -->
+		   
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12">
+				<div class="form-group">
+					<perch:label for="first_name">First name</perch:label>
+					<perch:input class="form-control" type="text" id="first_name" required="true" label="First name" placeholder="First Name"/>
+					<perch:error for="first_name" type="required">Please add your name</perch:error>
+				</div>
+
+				<div class="form-group">
+					<perch:label for="last_name">Last name</perch:label>
+					<perch:input class="form-control" type="text" id="last_name" required="true" label="Last name" placeholder="Last Name" />
+					<perch:error for="last_name" type="required">Please add your name</perch:error>
+				</div>
+
+				<div class="form-group">
+					<perch:label for="phone">Phone</perch:label>
+					<perch:input class="form-control" type="number" id="phone" required="true" placeholder="Phone" /> <!--helper="PerchMembers_Members::check_phone" />-->
+					<perch:error for="phone" type="required">Please add your phone address</perch:error>
+					<perch:error for="phone" type="helper">That phone is already in use</perch:error>
+
+				</div>
+
+
+			</div>
+		</div>
+	</fieldset>
+
+
+		<div class="row">
+			<div class="col-lg-12 mt-4">
+				<perch:input type="submit" class="btn btn-continue text-uppercase" id="submit" value="Continue" />
+			</div>
+		</div>
+
+	<perch:success>
+		<p>Thanks!</p>
+	</perch:success>
+
+</perch:form>

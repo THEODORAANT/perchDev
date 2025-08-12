@@ -1,0 +1,20 @@
+<div class="widget" data-app="customers">
+	<h2>
+		Customers
+		<span class="note"><perch:shop id="customers_total" /></span>
+	</h2>
+	<table>
+		<tr>
+			<th>New customers this month</th>
+			<td><perch:shop id="customers_frame_total" /></td>
+		</tr>
+		<tr>
+			<th>New customers last month</th>
+			<td><perch:shop id="customers_previous_total" /></td>
+		</tr>
+	</table>
+	<div class="bd">
+		<h3>Top spenders</h3>
+		<perch:shop id="customers_top_spenders" encode="false" />
+	</div>
+</div>

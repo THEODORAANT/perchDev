@@ -1,0 +1,18 @@
+<perch:before>
+    <div class="eventwrap">
+        <perch:form id="booking" method="post" app="perch_events">
+
+        <perch:input type="submit" value="add_booking" hidden="true" aria-hidden="true" ></perch:input>
+        <perch:input id="slotID<perch:events id="slotID" />" hidden="true" aria-hidden="true" value="<perch:events id="slotID" />"  ></perch:input>
+        <perch:input id="dayID" hidden="true" aria-hidden="true"  value="<perch:events id="dayID" />"  ></perch:input>
+        <perch:input id="eventID<perch:events id="eventID" />" hidden="true" aria-hidden="true"  value="<perch:events id="eventID" />" ></perch:input>
+        <perch:input id="date<perch:events id="date" />" hidden="true" aria-hidden="true"  value="<perch:events id="date" />" ></perch:input>
+</perch:before>
+
+<perch:input   <perch:if id="booking_status" match="within" value="hold,confirmed">disabled  </perch:if> type="submit" id="submit<perch:events id="time" />"  value="<perch:events id="time" />"></perch:input>
+
+
+    <perch:after></perch:form>
+      </div></perch:after>
+
+

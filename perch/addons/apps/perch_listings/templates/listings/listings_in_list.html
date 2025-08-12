@@ -1,0 +1,31 @@
+<perch:before>
+<ul class="hfeed listings"></perch:before>
+
+
+<!-- Property Card 1 -->
+<div class="property-card">
+    <perch:if exists="listingImage"><img src="<perch:listings id="listingImage" type="image"  crop="true" />" alt="<perch:listings id="listingTitle" />" /></perch:if>
+
+    <div class="property-details">
+        <h2><perch:listings id="listingTitle" /></h2>
+        <p class="price"><perch:listings id="currencysymbol" /><perch:listings id="listingPrice" /></p>
+        <p class="location"><perch:listings id="listingLocation" /></p>
+        <p class="description">     <perch:listings id="listingDescription" type="textarea" textile="true" /></p>
+        <a href="listing.php?s=<perch:listings id="listingSlug" type="hidden" />" class="details-button">View Details</a>
+    </div>
+</div>
+<perch:after>
+    </ul>
+    <perch:if exists="paging">
+        <div class="paging">
+            Page <perch:listings id="current_page" /> of <perch:listings id="number_of_pages" />
+            <perch:listings id="page_links" encode="false" />
+            <perch:if exists="not_first_page">
+                <a href="<perch:listings id="prev_url" encode="false" />">Previous</a>
+            </perch:if>
+            <perch:if exists="not_last_page">
+                <a href="<perch:listings id="next_url" encode="false" />">Next</a>
+            </perch:if>
+        </div>
+    </perch:if>
+</perch:after>

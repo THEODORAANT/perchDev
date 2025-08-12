@@ -1,0 +1,26 @@
+<perch:before>
+	<table>
+		<thead>
+			<tr>
+				<th>Order</th>
+				<th>Date</th>
+				<th>Total</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+</perch:before>
+			<tr>
+				<td>
+					<a href="/orders/<perch:shop id="orderID" escape="true" />">
+						<perch:shop id="orderInvoiceNumber" />
+					</a>
+				</td>
+				<td><perch:shop id="orderCreated" type="date" format="d F Y H:i" /></td>
+				<td><perch:shop id="orderTotal" /></td>
+				<td><perch:shop id="orderStatus" format="UC" /></td>
+			</tr>
+<perch:after>
+		</tbody>
+	</table>
+</perch:after>

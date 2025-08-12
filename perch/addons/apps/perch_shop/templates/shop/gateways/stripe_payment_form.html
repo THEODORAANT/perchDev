@@ -1,0 +1,9 @@
+<form action="" method="post">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="<perch:shop id="publishable_key" escape="true" />"
+        data-amount="<perch:shop id="amount" escape="true" />"
+        data-currency="<perch:shop id="currency" escape="true" />"
+        data-name="<perch:shop id="shop_name" escape="true" />"
+        data-description="Items (<perch:shop id="amount_formatted" escape="true" />)"
+        data-email="<perch:member id="email" escape="true" />">
+    </script>
+</form>

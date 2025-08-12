@@ -1,0 +1,32 @@
+
+<article class="h-entry">
+    <h1>
+        <a href="<perch:listings id="listingURL" type="hidden" />" rel="bookmark" class="p-name">
+        <perch:listings id="listingTitle" type="text" label="Title" required="true" size="xl autowidth" order="1" />
+        </a>
+    </h1>
+
+    <div class="description e-content">
+
+        <perch:listings id="listingDescHTML" type="textarea" label="Description" order="2" editor="markitup"  size="xxl autowidth" required="true" />
+    </div>
+
+    <div class="description e-content">
+        <perch:listings id="listingLocation" type="text" label="Location"  />
+    </div>
+    <div class="description e-content">
+        <perch:listings id="currencysymbol" />
+        <perch:listings id="listingPrice" type="text" label="Price"  />
+    </div>
+    <div class="description e-content">
+        <perch:listings id="listingSize" type="text" label="Size(sqft)"  />
+    </div>
+
+</article>
+
+<perch:listings id="listingImage" type="image" width="50" height="50" crop="true" suppress="true" />
+<perch:if exists="listingImage">
+    <div>
+        <img src="<perch:listings id="listingImage" type="image" width="320" height="240" crop="true" label="Image" order="4" />" alt="<perch:listings id="listingTitle" />" />
+    </div>
+</perch:if>

@@ -1,0 +1,29 @@
+<perch:before>
+<div class="widget" data-app="orders">
+	<div class="dash-content">
+        <header>
+            <h2>Recent orders</h2>
+        </header>
+        <div class="body">
+            <table class="fig">
+</perch:before>
+			<tr>
+				<td>
+					<a href="<perch:shop id="orders_app_path" />/order/?id=<perch:shop id="orderID" />">
+						<perch:shop id="orderInvoiceNumber" />
+					</a>
+				</td>
+				<td>
+					<a href="<perch:shop id="orders_app_path" />/customers/edit?id=<perch:shop id="customerID" />">
+						<perch:shop id="customerFirstName" /> <perch:shop id="customerLastName" />
+					</a>
+				</td>
+				<td class="note">
+					<perch:shop id="currencySymbol" /> <perch:shop id="orderTotal" />
+				</td>
+			</tr>
+<perch:after>
+		</table>
+	</div>
+</div>
+</perch:after>

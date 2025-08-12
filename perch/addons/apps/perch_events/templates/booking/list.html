@@ -1,0 +1,26 @@
+<perch:before>
+	<table>
+		<thead>
+			<tr>
+				<th>Booking ID</th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+</perch:before>
+			<tr>
+				<td>
+
+						<perch:events id="bookingID" />
+
+				</td>
+				<td><perch:events id="date" type="date" format="d F Y H:i" /></td>
+				<td><perch:events id="time" /></td>
+				<td><perch:events id="status" format="UC" /></td>
+			</tr>
+<perch:after>
+		</tbody>
+	</table>
+</perch:after>

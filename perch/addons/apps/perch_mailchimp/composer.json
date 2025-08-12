@@ -1,0 +1,13 @@
+{
+	"config": {
+        "vendor-dir": "lib/vendor",
+        "preferred-install": "dist",
+        "platform": {
+            "php": "5.4"
+        }
+    },
+    "require": {
+		"drewm/mailchimp-api": "~2.0"
+    }
+}
+

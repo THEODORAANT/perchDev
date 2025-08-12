@@ -1,0 +1,23 @@
+<perch:if different="productID">
+	<perch:if not-exists="perch_item_first">
+		</ul>
+	</perch:if>
+
+	<h2><perch:shop id="productTitle" type="text" /></h2>
+	<ul>
+</perch:if>
+
+	<li>
+		<h3>
+			<a href="deliver/<perch:shop id="fileID" />">
+				<perch:shop id="fileTitle" type="text" label="Title" order="1" />
+			</a>
+		</h3>
+		<perch:shop id="description" type="textarea" markdown="true" />
+		<p><a href="deliver/<perch:shop id="fileID" />">Download</a></p>
+
+	</li>
+
+<perch:after>
+	</ul>
+</perch:after>

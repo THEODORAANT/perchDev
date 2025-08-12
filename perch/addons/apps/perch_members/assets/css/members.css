@@ -1,0 +1,66 @@
+table.tags {
+	margin-top: 10px;
+}
+
+table.tags {
+	padding-left: 230px;
+}
+
+@media screen and (max-width: 1060px) {
+	table.tags {
+		margin-top: 10px;
+		padding-left: 0;
+	}
+}
+
+.membersclass  {
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto !important;
+	margin-left: auto !important;
+
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-right: -15px !important;
+	margin-left: -15px !important;
+}
+
+@media (min-width: 1025px) {
+	.membersclass .input-simple.m {
+		width: 90% !important;
+	}
+}
+
+.membersclass.form-simple .form-entry {
+	width: 100%;
+}
+/*
+.membersclass.input-simple.m {
+  width: 74% !important;
+} */
+
+.membersclass select {
+	padding: 0.35rem !important;
+	background-color: #f9f9f9 !important;
+	border-color: #ccc !important;
+}
+
+.membersclass .input-simple {
+	background-color: #f9f9f9 !important;
+}
+
+.membersclass .submit-bar {
+	border-top: 0px !important;
+	margin-top: 0.8rem !important;
+}
+
+.membersclass .button.button-simple {
+	border: 1px solid #cccccc;
+	padding: 7px 2em;
+	color: #FFFFFF;
+	background-color: #7898cb;
+}
+

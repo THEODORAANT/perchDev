@@ -1,0 +1,6 @@
+{
+    "lang": "en-gb",
+    "Orders": "Orders",
+    "Delete Customer": "Delete Customer",
+    "Delete Order": "Delete Order"
+}

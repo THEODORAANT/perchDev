@@ -1,0 +1,17 @@
+<form action="" method="post">
+	<div id="dropin-container"></div>
+	<div>
+		<input type="submit" value="Purchase" class="btn btn-primary" />
+	</div>
+</form>
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script>
+braintree.setup('<perch:shop id="client_token" escape="true" />', "dropin", {
+  container: 'dropin-container',
+  paypal: {
+    singleUse: true,
+    amount: <perch:shop id="amount" escape="true" />,
+    currency: '<perch:shop id="currency" escape="true" />'
+  },
+});
+</script>

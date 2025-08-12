@@ -1,0 +1,26 @@
+<perch:before>
+	<div class="wrapper cols2-nav-right">
+	
+		<div class="primary-content">
+<h1>Variants</h1>
+<ul class="listing">
+</perch:before>
+<li>
+	<a href="/shop/products/<perch:shop id="slug" type="slug" />/">
+		<perch:shop id="title" type="text" />
+		<perch:shop id="productVariantDesc" type="text" />
+	</a>
+
+	<perch:if not-exists="has_variants">
+		<perch:form id="add_to_cart" app="perch_shop" action="/shop/cart">
+			<perch:input id="product" type="hidden" value="<perch:shop id="productID" env-autofill="false" />" />
+			<perch:input type="submit" value="Add to cart" />
+		</perch:form>
+	</perch:if>
+</li>
+<perch:after>
+</ul>
+</div>
+</div>
+</perch:after>
+

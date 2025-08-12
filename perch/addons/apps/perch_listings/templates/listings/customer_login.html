@@ -1,0 +1,44 @@
+<perch:member logged-in="true">
+
+	<h3 class="text-center">Hi <perch:member id="first_name" />, you are logged in</h3>
+
+	<perch:else:member />
+
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12">
+				<h3 class="text-uppercase font-weight-bold mt-5">Sign in</h3>
+				<!--<h6 class="h6-customer-login">New customer? Please <span class="create-acc">create account.</span></h6>-->
+			</div>
+		</div>
+
+		<perch:form id="login" method="post" app="perch_members" type="user">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group mt-3">
+						<perch:label for="email" class="contact-label">Email</perch:label>
+						<perch:input type="email" class="form-control" id="email" placeholder="Email" required="true" />
+						<perch:error for="email" type="required">Please add your email address</perch:error>
+						<perch:error for="email" type="format">Check format of address</perch:error>
+					</div>
+
+					<div class="form-group">
+						<perch:label for="password" class="contact-label">Password</perch:label>
+						<perch:input type="password" class="form-control" id="password" placeholder="Password" required="true">
+							<perch:error for="password" type="required">Please add a password</perch:error>
+					</div>
+
+					<perch:error for="all" type="login">
+						<p class="error text-center mt-3">Those details do not match our records.</p>
+					</perch:error>
+
+					<div class="form-group mt-5">
+						<perch:input type="submit" class="btn btn-continue text-uppercase " id="submit" value="Sign in" />
+						<perch:input type="hidden" id="r" />
+						<a href="/reset_password.php"><p class="text-right mt-4 forgot">Forgotten your password?</p></a>
+					</div>
+				</div>
+			</div>
+		</perch:form>
+
+
+</perch:member>

@@ -1,0 +1,86 @@
+<perch:before>
+
+
+    <div class="container-fluid payment-b p-5">
+        <div class="container-fluid container-b p-4">
+            <div class="container ">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-6 col-sm-12 text-center">
+                        <img src="images/successful.png" width="150">
+                        <h2 class="font-weight-bold mt-4">Thank you for your order!</h2>
+                        <h5>Your payment has been successful. <br> A confirmation email has been sent to you<b> !<b> </h5>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12 ">
+                        <h4 class="mt-5 float-left">Order number </h4>
+                        <h4 class="mt-5 float-right"><perch:shop id="orderID" /></h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="float-left mt-3">Order date</h4>
+                        <h4 class="float-right mt-3 "><perch:shop id="orderCreated" type="date" format="d F Y H:i" /></h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12 ">
+                        <h4 class="float-left">Payment type</h4>
+                        <h4 class="float-right"><perch:shop id="orderGateway" /> </h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12 ">
+                        <h4 class="float-left">Purchased items total</h4>
+                        <h4 class="float-right"><perch:shop id="currencySymbol"> <perch:shop id="orderItemsSubtotal" /></h4>
+
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="float-left">Delivery method</h4>
+                        <h4 class="float-right"><perch:shop id="currencySymbol"> <perch:shop id="orderShippingTotal" /></h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-lg-6 col-md-6 col-sm-12 border-text">
+                        <h3 class="text-uppercase float-left font-weight-bold"> Total </h3>
+                        <h3 class="float-right font-weight-bold"> <perch:shop id="grand_total_formatted" /> </h3>
+                    </div>
+                </div>
+                <!--   <div class="row justify-content-center ">
+                     <div class="col-lg-6 col-md-6 col-sm-12 ">
+                         <h4 class="mt-5 text-uppercase font-weight-bold float-left">Delivery Address</h4>
+                         <h4 class="mt-5 float-right font-weight-bold estimated">Estimated delivery date</h4>
+                        <h4 class=" estimated">February 10, 2021</h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="float-left name">Name Surname</h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="float-left">Postcode, City</h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="float-left">Purchased items</h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h4 class="float-left">Country</h4>
+                    </div>
+                </div>-->
+                <div class="row justify-content-center ">
+                    <div class="col-lg-12 col-md-6 col-sm-6 mt-3 text-center mt-5 ">
+                        <a href="" class="btn btn-success text-uppercase text-center">Continue Shopping </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

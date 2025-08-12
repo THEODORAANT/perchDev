@@ -1,0 +1,23 @@
+<h4>
+	<perch:shop id="title" type="text" label="Title" required="true" order="1" />
+</h4>
+
+<perch:shop id="description" type="textarea" label="Description" order="3" editor="markitup" markdown="true" size="xs" />
+
+
+<p>Supplier: <perch:shop id="company" type="text" label="Provider" order="3" help="e.g. Postal Service, FedEx"  /></p>
+
+<perch:zones>
+	<perch:before><dl></perch:before>
+	<perch:if exists="customer_zone_id">
+		<perch:if id="zoneID" value="{customer_zone_id}">
+			<dt><perch:zone id="zoneTitle" /></dt>
+			<dd><perch:zone id="price" type="shop_currency_value" /></dd>
+		</perch:if>
+	<perch:else />
+		<dt><perch:zone id="zoneTitle" /></dt>
+		<dd><perch:zone id="price" type="shop_currency_value" /></dd>
+	</perch:if>
+	<perch:after></dl></perch:after>
+</perch:zones>
+

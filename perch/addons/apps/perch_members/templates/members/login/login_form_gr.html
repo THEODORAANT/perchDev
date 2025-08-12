@@ -1,0 +1,45 @@
+<perch:member logged-in="true"> 
+
+	<div class="row justify-content-center">
+		<div class="col-lg-10 text-center p-3">
+		<img src="../../../../../../../images/sign/singed.png" alt="">
+		<h2>Καλοσωρίσατε  <perch:member id="first_name" />!</h2>
+		</div>
+	</div>
+
+<perch:else:member />
+
+
+<perch:form id="login" method="post" app="perch_members" type="user">
+	
+	<div class="row justify-content-center mt-6">
+		<div class="form-group col-lg-10 col-12">
+			<perch:input type="email" class="form-control register" id="email" placeholder="Διεύθυνση ηλεκτρονικού ταχυδρομείου" required="true">
+			<perch:error for="email" type="required">Υποχρεωτικό</perch:error>
+			<perch:error for="email" type="login">Μη έγκυρη μορφή</perch:error>
+		</div>
+	</div>
+	<div class="row justify-content-center mt-3">
+		<div class="form-group col-lg-10 col-12">
+			<perch:input type="password" class="form-control register" id="password" placeholder="Κωδικός πρόσβασης">
+			<perch:error for="password" type="required">Υποχρεωτικό</perch:error>
+		</div>
+	</div>
+	<perch:error for="all" type="login">
+		<p class="error text-center">Μη έγκυρα στοιχεία.</p>
+	</perch:error>
+	<div class="row justify-content-center mt-3">
+		<div class="col-lg-10 col-12 text-left">
+			<perch:input type="submit" class="btn btn-sign" id="submit" value="Συνδεθείτε" />
+			<perch:input type="hidden" id="r" />
+		</div>  
+	</div>
+	<div class="row justify-content-center mt-4">
+		<div class="col-lg-10 col-12 text-left ml-3 mb-5">
+			<a href="/reset_password"><h6 class="h1-forgot">Ξεχάσατε <span class="sign-in"> τον κωδικό σας? </span> </h6></a>
+			<a href="/register#scroll"><h6 class="h1-forgot">Δεν εχετε <span class="sign-in"> Λογαριασμό? </span> </h6></a>
+		</div>
+	</div>
+</perch:form>
+
+</perch:member>

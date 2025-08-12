@@ -1,0 +1,20 @@
+<perch:before>
+<table>
+</perch:before>
+	<tr>
+		<th>
+			<a href="<perch:shop id="perch_page_path" replace="/index.php|_orders/customers/edit/?id=" /><perch:shop id="customer_id" />">
+				<perch:shop id="customer_first_name" />
+				<perch:shop id="customer_last_name" />
+			</a>
+		</th>
+		<td>
+			<perch:shop id="customer_order_count" /> orders
+		</td>
+		<td>
+			<perch:shop id="customer_total_formatted" />
+		</td>
+	</tr>
+<perch:after>
+</table>
+</perch:after>

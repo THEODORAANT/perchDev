@@ -1,0 +1,25 @@
+<perch:before>
+	<ul>
+</perch:before>
+	<li>
+		<h2>
+			<a href="<perch:emailoctopus id="campaignURL" type="text" />">
+				<perch:emailoctopus id="campaignSubject" type="text" />
+			</a>
+		</h2>
+		<p><perch:emailoctopus id="campaignSendTime" type="date" format="d F Y" /></p>
+	</li>
+<perch:after>
+	</ul>
+	<perch:if exists="paging">
+		<div class="paging">
+			Page <perch:emailoctopus id="current_page" type="hidden" /> of <perch:emailoctopus id="number_of_pages" type="hidden" />
+			<perch:if exists="not_first_page">
+				<a href="<perch:emailoctopus id="prev_url" type="hidden" encode="false" />">Previous</a>
+			</perch:if>
+			<perch:if exists="not_last_page">
+				<a href="<perch:emailoctopus id="next_url" type="hidden" encode="false" />">Next</a>
+			</perch:if>
+		</div>
+	</perch:if>
+</perch:after>

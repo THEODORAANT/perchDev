@@ -1,0 +1,132 @@
+<perch:template path="email.html" relative="true" />
+<perch:template path="_email_header.html" relative="true" />
+	<table width="100%" style="border: 1px solid #EAEAEA; box-shadow:0px 0px 10px #EAEAEA;">
+		<tr>
+			<td style="padding: 10px 20px; background-color: #F7F7F9;" valign="top"><h1 style="font-size: 20px; color: #000000; font-weight: normal;"><perch:shop id="subject" type="text" /></h1></td>
+		</tr>
+		<tr>
+			<td style="padding: 10px 20px;">
+				<img src="<perch:setting id="perch_shop_site_url" escape="true" /><perch:shop id="logo" type="image" label="Logo" width="460" height="180" escape="true" />" alt="">
+				<perch:shop id="intro" type="textarea" label="Introduction" markdown="true" editor="markitup" size="s" />
+
+				<p><b>Order:</b> <perch:shop id="orderInvoiceNumber" type="hidden" /></p>
+				<hr>
+
+			<table width="100%">
+			<thead>
+                <tr>
+                    <th align="left">Item</th>
+                    <th align="left">Options</th>
+                    <th align="left" width="10%">Quantity</th>
+                    <th align="left" width="20%">Unit Price</th>
+                    <th align="right" width="20%">Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <perch:orderitems>
+            	<tr>
+                    <td>
+                    	<perch:orderitem id="title" type="hidden" />
+                    </td>
+                    <td>
+                        <perch:orderitem id="variant_desc" type="hidden" />
+                    </td>
+                    <td>
+                        <perch:orderitem id="quantity" type="hidden" />
+                    </td>
+                    <td>
+                    	<perch:orderitem id="price_without_tax" type="hidden" format="$:%.2n" />
+                    </td>
+                    <td align="right">
+                    	<perch:orderitem id="total_without_tax" type="hidden" format="$:%.2n" />
+                    </td>
+                </tr>
+            </perch:orderitems>
+	            
+            	<perch:if id="total_discounts" match="gt" value="0.00">
+				<tr>
+					<td colspan="4" align="right">
+						Discount (<perch:shop id="discount_code" type="hidden" />)
+					</td>
+					<td align="right" colspan="2">
+						<perch:shop id="total_discounts" type="hidden" format="$:%.2n" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" align="right">
+						Total
+					</td>
+					<td align="right" colspan="2">
+						<perch:shop id="total_items" type="hidden" format="$:%.2n" />
+					</td>
+				</tr>
+				<perch:else />
+				<tr>
+					<td colspan="4" align="right">
+						Total
+					</td>
+					<td align="right" colspan="2">
+						<perch:shop id="total_items" type="hidden" format="$:%.2n" />
+					</td>
+				</tr>
+				</perch:if>
+
+				<perch:if id="shipping_weight" match="gt" value="0">
+					<tr>
+						<td colspan="4" align="right">
+							Shipping: <perch:shop id="shipping_method" type="hidden" /> 
+						</td>
+						<td align="right" colspan="2">
+							<perch:shop id="shipping_without_tax" type="hidden" format="$:%.2n" />
+						</td>
+					</tr>
+				</perch:if>
+
+				<tr>
+					<td colspan="4" align="right">
+						Tax
+					</td>
+					<td align="right" colspan="2">
+						<perch:shop id="total_tax" type="hidden" format="$:%.2n" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" align="right">
+						<b>Grand total</b>
+					</td>
+					<td align="right" colspan="2">
+						<b><perch:shop id="grand_total_formatted" type="hidden" /></b>
+					</td>
+				</tr>
+            </tbody>
+		</table>
+
+				<hr>
+				<h2>Shipping to</h2>
+				<p>
+					<perch:shop id="shipping_first_name" type="hidden" /> <perch:shop id="shipping_last_name" type="hidden" /><br>
+					<perch:if exists="shipping_company"><perch:shop id="shipping_company" type="hidden" /><br></perch:if>
+					<perch:if exists="shipping_address_1"><perch:shop id="shipping_address_1" type="hidden" /><br></perch:if>
+					<perch:if exists="shipping_address_2"><perch:shop id="shipping_address_2" type="hidden" /><br></perch:if>
+					<perch:if exists="shipping_county"><perch:shop id="shipping_county" type="hidden" /><br></perch:if>
+					<perch:if exists="shipping_city"><perch:shop id="shipping_city" type="hidden" /><br></perch:if>
+					<perch:if exists="shipping_postcode"><perch:shop id="shipping_postcode" type="hidden" /></perch:if>
+				</p>
+
+				<h2>Billing</h2>
+				<p>
+					<perch:shop id="billing_first_name" type="hidden" /> <perch:shop id="billing_last_name" type="hidden" /><br>
+					<perch:if exists="billing_company"><perch:shop id="billing_company" type="hidden" /><br></perch:if>
+					<perch:if exists="billing_address_1"><perch:shop id="billing_address_1" type="hidden" /><br></perch:if>
+					<perch:if exists="billing_address_2"><perch:shop id="billing_address_2" type="hidden" /><br></perch:if>
+					<perch:if exists="billing_county"><perch:shop id="billing_county" type="hidden" /><br></perch:if>
+					<perch:if exists="billing_city"><perch:shop id="billing_city" type="hidden" /><br></perch:if>
+					<perch:if exists="billing_postcode"><perch:shop id="billing_postcode" type="hidden" /></perch:if>
+				</p>
+				<hr>
+				<perch:shop id="signoff" type="textarea" label="Sign-off" markdown="true" editor="markitup" size="s" />
+			</td>
+		</tr>
+	</table>
+<perch:template path="_email_footer.html" relative="true" />
