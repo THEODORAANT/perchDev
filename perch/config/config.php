@@ -29,7 +29,7 @@
    //  define('PERCH_LOCALE', 'fr_FR');
     define('PERCH_DEBUG', true);
    define('PERCH_STRIPSLASHES', false);
-   define('PERCH_TWILLIO_AUTHTOKEN', "b9b26ad2b32c51034f96910d560aba5a");
+   define('PERCH_TWILLIO_AUTHTOKEN', "");
    //define('PERCH_TWILLIO_FROM',"+14155238886");
 define('PERCH_EMAIL_METHOD', 'smtp');
 define('PERCH_EMAIL_HOST', 'sandbox.smtp.mailtrap.io');
