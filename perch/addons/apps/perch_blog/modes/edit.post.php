@@ -106,19 +106,38 @@
                 if ($CurrentUser->has_priv('perch_blog.post.publish')) $opts[] = array('label'=>$Lang->get('Published'), 'value'=>'Published');
                 echo $Form->select_field('postStatus', 'Status', $opts, isset($details['postStatus'])?$details['postStatus']:'Draft');
 
-                echo $Form->submit_field('btnSubmit', 'Save', $API->app_path());
+                $ai_button = '<button type="button" id="btnGenerateAI" class="button button-simple">'.PerchUtil::html($Lang->get('Generate with AI')).'</button>';
+                echo $Form->submit_field('btnSubmit', 'Save', $API->app_path(), 'button', $ai_button);
 
             } else {
 
                 echo $Form->hidden('authorID', $Author->id());
                 echo $Form->hidden('postStatus', 'Draft');
-                echo $Form->submit_field('btnSubmit', 'Create draft', $API->app_path());
+                $ai_button = '<button type="button" id="btnGenerateAI" class="button button-simple">'.PerchUtil::html($Lang->get('Generate with AI')).'</button>';
+                echo $Form->submit_field('btnSubmit', 'Create draft', $API->app_path(), 'button', $ai_button);
             }
 
 
             
 
         echo $Form->form_end();
+?>
+<script>
+document.getElementById('btnGenerateAI').addEventListener('click', function(e){
+    e.preventDefault();
+    var prompt = window.prompt('Enter prompt for AI content');
+    if(!prompt) return;
+    fetch('<?php echo PERCH_LOGINPATH; ?>/addons/apps/perch_blog/ai/generate.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({prompt: prompt})
+    }).then(function(r){return r.json();}).then(function(data){
+        var textarea = document.querySelector('#blog-edit textarea');
+        if(textarea) textarea.value = data.content;
+    });
+});
+</script>
+<?php
         /* ---- /FORM ---- */
 
     } // if edit_mode
