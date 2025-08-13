@@ -382,32 +382,32 @@ class PerchShop_Product extends PerchShop_Base
                 // Whos tax rate do we use?
                 $TaxGroup = $this->get_tax_group();
 
+                // Always get the home tax rate
+                $home_tax_rate = $TaxRates->get_rate_for_location((int)$TaxGroup->id(), (int)$HomeTaxLocation->id());
+
                 if ($TaxGroup->groupTaxRate()=='buyer') {
                     $TaxLocation = $CustomerTaxLocation;
                 }else{
                     $TaxLocation = $HomeTaxLocation;
                 }
 
-                // Which rate to charge? Standard, reduced etc
+                // Rate to charge based on buyer location decision
                 $tax_rate = $TaxRates->get_rate_for_location((int)$TaxGroup->id(), (int)$TaxLocation->id());
 
-                // Add or remove tax?
-                $multiplier = 1 + ($tax_rate/100);
-
+                // Calculate exclusive price
                 if ($prices_tax_inclusive) {
-                    // remove tax from base price
-                    $exclusive_price = $base_price / $multiplier;
-                    $inclusive_price = $base_price;
+                    $exclusive_price = $base_price / (1 + $home_tax_rate/100);
                 }else{
-                    // add tax to base price
                     $exclusive_price = $base_price;
-                    $inclusive_price = $base_price * $multiplier;
                 }
 
+                // Calculate inclusive price using buyer's tax rate
+                $inclusive_price = $exclusive_price * (1 + $tax_rate/100);
+
                 $Totaliser->add_to_items($exclusive_price*$qty, $tax_rate);
-                
+
                 if ($customer_pays_tax) {
-                    $Totaliser->add_to_tax(($inclusive_price - $exclusive_price)*$qty, $tax_rate);    
+                    $Totaliser->add_to_tax(($inclusive_price - $exclusive_price)*$qty, $tax_rate);
                 }
 
                 if (!$customer_pays_tax) {
