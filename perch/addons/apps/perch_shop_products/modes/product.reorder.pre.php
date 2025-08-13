@@ -13,9 +13,11 @@
 
                                 	             if (trim($str)!='') {
                                                                 	                    $parts = explode('=', $str);
-                                                                	                    $productID = str_replace(array('product[',']'), '', $parts[0]);
-                                                                	                    $parentID = $parts[1];
-                                                                	                      if ($parentID == 'root') $parentID = '0';
+                                                                                            $productID = str_replace(array('product[',']'), '', $parts[0]);
+                                                                                            $parentID = $parts[1];
+                                                                                              if (in_array($parentID, ['root', 'null', '0', ''], true)) {
+                                                                                                  $parentID = null;
+                                                                                              }
 
                                                                                                         	                    if (!isset($sort_orders[$parentID])) {
                                                                                                         	                        $sort_orders[$parentID] = 1;

@@ -543,9 +543,13 @@ class PerchShop_Product extends PerchShop_Base
 
         $data = array();
 
-        if ($parentID) {
-            $data['parentID'] = $parentID;
-        }else{
+        if ($parentID !== false) {
+            if ($parentID === null) {
+                $data['parentID'] = null;
+            } else {
+                $data['parentID'] = $parentID;
+            }
+        } else {
             $data['parentID'] = $this->parentID();
         }
 
