@@ -382,7 +382,8 @@ class PerchEvents_DisplayCalendar {
 
 
         foreach($this->diary as $Event) {
-     $thisdatetime = date("Y-m-d h:i",strtotime($Event->eventDateTime()));
+     //$thisdatetime = date("Y-m-d h:i",strtotime($Event->eventDateTime()));
+$thisdatetime = date("Y-m-d H:i", strtotime($Event->eventDateTime()));
 
         $startTime = strtotime( $Event->date() );
         $endTime = strtotime( $Event->enddate());
