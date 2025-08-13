@@ -5,7 +5,7 @@ class PerchBlog_AI
 
     public function __construct()
     {
-        $this->api_key = getenv('OPENAI_API_KEY');
+        $this->api_key = OPENAI_API_KEY;
     }
 
     public function generate($prompt)

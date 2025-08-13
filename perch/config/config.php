@@ -30,7 +30,7 @@
     define('PERCH_DEBUG', true);
    define('PERCH_STRIPSLASHES', false);
    define('PERCH_TWILLIO_AUTHTOKEN', "");
-   //define('PERCH_TWILLIO_FROM',"+14155238886");
+   define('OPENAI_API_KEY',"");
 define('PERCH_EMAIL_METHOD', 'smtp');
 define('PERCH_EMAIL_HOST', 'sandbox.smtp.mailtrap.io');
 define('PERCH_EMAIL_AUTH', true);

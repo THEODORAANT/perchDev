@@ -38,6 +38,27 @@ class PerchShopGateway_stripeV1 extends PerchShopGateway_default
 		}
 		return $config['live']['publishable_key'];
 	}
+	public function get_transaction_data($Order)
+	{
+
+        $paymentIntentId=$Order->orderGatewayRef();
+        $Gateway = PerchShop_Gateways::get('stripe');
+            	$config = PerchShop_Config::get('gateways', $this->slug);
+            	$key 	 = $Gateway->get_public_api_key($config);
+            	$stripeSecretKey 	 = $Gateway->get_api_key($config);
+            	 // Fetch PaymentIntent from Stripe
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, "https://api.stripe.com/v1/payment_intents/$paymentIntentId");
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_USERPWD, $stripeSecretKey . ':');
+
+                    $response = curl_exec($ch);
+                    curl_close($ch);
+
+                    $paymentIntent = json_decode($response, true);
+                    return $paymentIntent;
+
+	}
 
 	public function get_card_address($Order)
 	{
@@ -107,7 +128,7 @@ return true;
         $amount = (int) round($orderTotal * 100); // Convert to 12900 (pence) — GOOD
 
         $currency = $Order->get_currency_code(); // "gbp", "usd", etc.
-        $product_name = 'GetWeightLoss Order #' . $Order->id();
+        $product_name = ' Order #' . $Order->id();
             $config = PerchShop_Config::get('gateways', $this->slug);
     	//	$opts = array_merge($opts, $payment_opts);
     	$stripe_secret_key = $this->get_api_key($config);
@@ -174,7 +195,7 @@ return true;
                       'amount' => intval($amount * 100),
                       'currency' => 'gbp',
                       'destination' => $accountId,
-                      'description' => 'Affiliate payout'
+                      'description' => 'payout'
                   ]);
 
                   $ch = curl_init('https://api.stripe.com/v1/transfers');
