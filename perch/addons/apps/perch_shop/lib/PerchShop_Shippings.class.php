@@ -37,15 +37,13 @@ class PerchShop_Shippings extends PerchShop_Factory
 				}
 			}
 
-			if (is_array($cart_product_categories) && count($cart_product_categories) > 0) {
+                        if (is_array($cart_product_categories) && count($cart_product_categories) > 0) {
 
-			$commonValues = array_intersect($cart_product_categories, $shipping["category"]);
-
-
-            if (empty($commonValues)) {
-                return false;
-            }
-			}
+                                if (isset($shipping['category']) && is_array($shipping['category']) && count($shipping['category'])) {
+                                        $commonValues = array_intersect($cart_product_categories, $shipping['category']);
+                                        if (empty($commonValues)) return false;
+                                }
+                        }
 
 
 			// Cart weight is less than min shipping weight
