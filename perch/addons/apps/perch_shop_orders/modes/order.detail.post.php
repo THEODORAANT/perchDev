@@ -25,15 +25,18 @@
     $output2.= '<div class="row logo-bckgr p-4">';
 
         $logo = $Settings->get('logoPath')->settingValue();
-
+        $base = rtrim(PerchSystem::get_site_url(), '/');
+        $invoice_url = $base . '/perch/addons/apps/perch_shop/assets/invoice.png';
+        $line_url    = $base . '/perch/addons/apps/perch_shop/assets/line2.png';
 
         if ($logo) {
-        echo '<img src="../../../../../../'.PerchUtil::html($logo).'"  class="preview" alt="" width="300" />';
-            $output2.= '<img src="../../../../../../'.PerchUtil::html($logo).'"  class="preview" alt="" width="300" />';
+        $logo_url = $base . '/' . ltrim($logo, '/');
+        echo '<img src="'.PerchUtil::html($logo_url).'"  class="preview" alt="" width="300" />';
+            $output2.= '<img src="'.PerchUtil::html($logo_url).'"  class="preview" alt="" width="300" />';
 
         }
 
-        $output2.= '<img class="float-right mt-4 ml-8" src="'.$_SERVER['DOCUMENT_ROOT'].'/perch/addons/apps/perch_shop/assets/invoice.png" width="200">';
+        $output2.= '<img class="float-right mt-4 ml-8" src="'.PerchUtil::html($invoice_url).'" width="200">';
 
     $output2.= '</div>';
 
@@ -41,7 +44,7 @@
     $output2.= '<div class="row">';
 
     $output2.= $HTML->heading2('ORDER INFO');
-    $output2.= '<img src="'.$_SERVER['DOCUMENT_ROOT'].'/perch/addons/apps/perch_shop/assets/line2.png" class="line-info">';
+    $output2.= '<img src="'.PerchUtil::html($line_url).'" class="line-info">';
     
     $output2.= '<div class="inner">';
     $output2.=  '<table class="d factsheet text-uppercase">';
@@ -126,7 +129,7 @@
 
 
 $output2.=  $HTML->heading2('CUSTOMER INFO');
-$output2.= '<img src="'.$_SERVER['DOCUMENT_ROOT'].'/perch/addons/apps/perch_shop/assets/line2.png" class="line-info">';
+$output2.= '<img src="'.PerchUtil::html($line_url).'" class="line-info">';
 
     $output2.=  '<div class="inner"> <table class="d factsheet text-uppercase">';
 
