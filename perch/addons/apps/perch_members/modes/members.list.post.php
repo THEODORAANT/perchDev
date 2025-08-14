@@ -160,6 +160,14 @@
                     'inline' => true,
                     'path'   => 'delete',
                 ]);
+
+        $Listing->add_misc_action([
+                    'title' => $Lang->get('Login as'),
+                    'path'  => function($item) {
+                        return 'impersonate/?id=' . $item->id();
+                    },
+                    'priv'  => 'perch_members.impersonate',
+                ]);
         
             
         echo $Listing->render($members);
