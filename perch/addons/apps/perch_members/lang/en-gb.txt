@@ -50,6 +50,7 @@
     "Send welcome email": "Send welcome email",
     "Will only be sent to active members": "Will only be sent to active members",
     "Login page path": "Login page path",
+    "Akismet API key": "Akismet API key",
     "Manage members": "Manage members",
     "Forms": "Forms",
     "Active": "Active",
