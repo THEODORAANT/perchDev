@@ -37,7 +37,7 @@ class PerchMembers_Akismet
         $Perch = Perch::fetch();
 
         $data = array();
-        $data['members']                 = self::get_site_url();
+        $data['blog']                 = self::get_site_url();
         $data['user_ip']              = $environment['REMOTE_ADDR'];
         $data['user_agent']           = $environment['HTTP_USER_AGENT'];
         $data['referrer']             = $environment['HTTP_REFERER'];
