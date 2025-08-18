@@ -172,7 +172,7 @@ class PerchMembers_Members extends PerchAPI_Factory
 	    	$member['memberProperties'] = PerchUtil::json_safe_encode($properties);
 	    	// Anti-spam
             $Settings = $this->api->get('Settings');
-            $akismetAPIKey =$Settings->get('perch_blog_akismet_key')->val();
+            $akismetAPIKey = $Settings->get('perch_members_akismet_key')->val();
 
              $spam = false;
             $antispam = $SubmittedForm->get_antispam_values();
