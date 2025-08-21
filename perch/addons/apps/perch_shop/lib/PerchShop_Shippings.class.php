@@ -39,8 +39,9 @@ class PerchShop_Shippings extends PerchShop_Factory
 
                         if (is_array($cart_product_categories) && count($cart_product_categories) > 0) {
 
-                                if (isset($shipping['category']) && is_array($shipping['category']) && count($shipping['category'])) {
-                                        $commonValues = array_intersect($cart_product_categories, $shipping['category']);
+                                $shippingCategories = isset($shipping['category']) ? (array)$shipping['category'] : [];
+                                if ($shippingCategories && is_array($cart_product_categories)) {
+                                        $commonValues = array_intersect($cart_product_categories, $shippingCategories);
                                         if (empty($commonValues)) return false;
                                 }
                         }
