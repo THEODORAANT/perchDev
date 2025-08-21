@@ -1,0 +1,18 @@
+<perch:if exists="packageitems">
+<table class="package-summary">
+    <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Remove</th>
+    </tr>
+    <perch:packageitems>
+    <tr>
+        <td><perch:packageitem id="title" /></td>
+        <td><input type="number" name="qty[<perch:packageitem id='id' />]" value="<perch:packageitem id='quantity' />" min="0" /></td>
+        <td><input type="checkbox" name="remove[<perch:packageitem id='id' />]" value="1" /></td>
+    </tr>
+    </perch:packageitems>
+</table>
+<perch:else />
+<p>Your package is empty.</p>
+</perch:if>
