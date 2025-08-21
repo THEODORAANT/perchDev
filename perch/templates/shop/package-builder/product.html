@@ -2,8 +2,12 @@
 <div class="package-product">
     <h2><perch:shop id="title" /></h2>
     <input type="hidden" name="product_id[]" value="<perch:shop id='productID' />" />
-    <perch:if exists="_variant_opts">
-        <perch:input type="select" id="variant[]" options="<perch:shop id='_variant_opts' type='hidden' />" />
+    <perch:if exists="variants">
+        <select id="variant[]" name="variant[]">
+            <perch:variants>
+                <option value="<perch:variants id='productID' />"><perch:variants id='title' /></option>
+            </perch:variants>
+        </select>
     <perch:else />
         <input type="hidden" name="variant[]" value="<perch:shop id='productID' />" />
     </perch:if>
