@@ -15,12 +15,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
+    if (perch_post('action') === 'checkout') {
+        try {
+            $package = perch_shop_create_package([]);
+            if ($package) {
+                PerchUtil::redirect('checkout.php');
+            }
+        } catch (Exception $e) {
+            // fall through to error redirect
+        }
+        PerchUtil::redirect('package-builder.php?error=package_exists');
+    }
 }
 ?>
 <form method="post">
     <?php perch_shop_package_contents([
         'template' => 'package-summary/summary.html',
     ]); ?>
-    <button type="submit">Update package</button>
+    <button type="submit" name="action" value="update">Update package</button>
+    <button type="submit" name="action" value="checkout">Proceed to checkout</button>
 </form>
-<p><a href="checkout.php">Proceed to checkout</a></p>
