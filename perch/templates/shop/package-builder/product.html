@@ -5,7 +5,7 @@
     <perch:if exists="variants">
         <select id="variant[]" name="variant[]">
             <perch:variants>
-                <option value="<perch:variants id='productID' />"><perch:variants id='title' /></option>
+                <option value="<perch:variant id='productID' />"><perch:variant id='title' /></option>
             </perch:variants>
         </select>
     <perch:else />
