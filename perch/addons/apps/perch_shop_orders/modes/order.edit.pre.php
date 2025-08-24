@@ -49,7 +49,8 @@
         $postvars = ['customer'];
         $more = $Form->receive($postvars);
         if (isset($more['customer']) && $more['customer'] !== '') {
-            $data['customerID'] = $more['customer'];
+            $data['customerID'] = (int)$more['customer'];
+
         }
 
         if (!$Order) {
@@ -59,6 +60,10 @@
             }
             $Order = $Orders->create($data);
             if ($Order) {
+                // ensure customer is persisted on creation
+                if (isset($data['customerID'])) {
+                    $Order->update(['customerID' => $data['customerID']]);
+                }
                 $Order->assign_invoice_number();
                 $Order->index($Template);
                 PerchUtil::redirect($Perch->get_page().'?id='.$Order->id().'&created=1');
