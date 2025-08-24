@@ -50,6 +50,7 @@
         $more = $Form->receive($postvars);
         if (isset($more['customer']) && $more['customer'] !== '') {
             $data['customerID'] = (int)$more['customer'];
+
         }
 
         if (!$Order) {
