@@ -1,68 +1,120 @@
 <?php
-	$Brands = new PerchShop_Brands($API);
-	
-	$edit_mode = false;
-	$Brand     = false;
-	$shop_id = false;
-	$message   = false;
-	$details   = false;
+    $Orders     = new PerchShop_Orders($API);
+    $Currencies = new PerchShop_Currencies($API);
+    $Customers  = new PerchShop_Customers($API);
+    $Products   = new PerchShop_Products($API);
 
-	if (PerchUtil::get('id')) {
+    $customer_opts = [];
+    $product_opts  = [];
 
-		if (!$CurrentUser->has_priv('perch_shop.brands.edit')) {
-		    PerchUtil::redirect($API->app_path());
-		}
+    $CustomerList = $Customers->all();
+    if (PerchUtil::count($CustomerList)) {
+        foreach($CustomerList as $Customer) {
+            $customer_opts[] = [
+                'value' => $Customer->id(),
+                'label' => $Customer->customerFirstName().' '.$Customer->customerLastName()
+            ];
+        }
+    }
 
-		$shop_id = PerchUtil::get('id');
-		$Brand     = $Brands->find($shop_id);
-		$edit_mode = true;
+    $ProductList = $Products->get_for_admin_listing();
+    if (PerchUtil::count($ProductList)) {
+        foreach($ProductList as $Product) {
+            $product_opts[] = [
+                'value' => $Product->id(),
+                'label' => $Product->productTitle()
+            ];
+        }
+    }
 
-	}else{
-		if (!$CurrentUser->has_priv('perch_shop.brands.create')) {
-		    PerchUtil::redirect($API->app_path());
-		}
-	}
+    $edit_mode = false;
+    $Order     = false;
+    $shop_id   = false;
+    $message   = false;
+    $details   = false;
 
-	// Template
-	$Template   = $API->get('Template');
-	$Template->set('shop/brands/brand.html', 'shop');
-	$tags = $Template->find_all_tags_and_repeaters();
+    if (PerchUtil::get('id')) {
+        if (!$CurrentUser->has_priv('perch_shop.orders.edit')) {
+            PerchUtil::redirect($API->app_path());
+        }
 
-	$Form = $API->get('Form');
-	$Form->handle_empty_block_generation($Template);
+        $shop_id = PerchUtil::get('id');
+        $Order   = $Orders->find($shop_id);
+        $edit_mode = true;
+    } else {
+        if (!$CurrentUser->has_priv('perch_shop.orders.create')) {
+            PerchUtil::redirect($API->app_path());
+        }
+    }
 
-	$Form->set_required_fields_from_template($Template, $details);
+    $Template = $API->get('Template');
+    $Template->set('shop/orders/admin_order.html', 'shop');
+    $tags = $Template->find_all_tags_and_repeaters();
 
-	if ($Form->submitted()) {
+    $Form = $API->get('Form');
+    $Form->handle_empty_block_generation($Template);
 
-		$data = $Form->get_posted_content($Template, $Brands, $Brand);
-		
-		if ($Brand) {
-			$Brand->update($data);	
-			$Brand->index($Template);
-		}else{
-			$Brand = $Brands->create($data);
-			$Brand->index($Template);
+    $Form->set_required_fields_from_template($Template, $details);
 
-			if ($Brand) {
-				PerchUtil::redirect($Perch->get_page().'?id='.$Brand->id().'&created=1');	
-			}
-			
-		}
+    if ($Form->submitted()) {
+        $data = $Form->get_posted_content($Template, $Orders, $Order);
 
-		if (is_object($Brand)) {
-		    $message = $HTML->success_message('Your brand has been successfully edited. Return to %slisting%s', '<a href="'.$API->app_path('perch_shop_products') .'/brands">', '</a>');
-		}else{
-		    $message = $HTML->failure_message('Sorry, that update was not successful.');
-		}
+        $data['customerID'] = PerchUtil::post('customer');
+        $productID = PerchUtil::post('product');
+        $qty       = (int)PerchUtil::post('qty');
 
-	}
+        if (!$Order) {
+            $Currency = $Currencies->get_default();
+            if ($Currency) {
+                $data['currencyID'] = $Currency->id();
+            }
+            $Order = $Orders->create($data);
+            if ($Order) {
+                $Order->assign_invoice_number();
 
-	if (PerchUtil::get('created') && !$message) {
-	    $message = $HTML->success_message('Your brand has been successfully created. Return to %s listing%s', '<a href="'. $API->app_path('perch_shop_products') .'/brands">', '</a>');
-	}
+                if ($productID && $qty) {
+                    $OrderItems = new PerchShop_OrderItems($API);
+                    $Product = $Products->find($productID);
+                    $price = 0;
+                    if ($Product) {
+                        $prod_data = $Product->to_array();
+                        if (isset($prod_data['current_price'])) {
+                            $price = $prod_data['current_price'];
+                        }
+                    }
+                    $OrderItems->create([
+                        'itemType'        => 'product',
+                        'orderID'         => $Order->id(),
+                        'productID'       => $productID,
+                        'itemPrice'       => $price,
+                        'itemTax'         => 0,
+                        'itemTotal'       => $price * $qty,
+                        'itemQty'         => $qty,
+                        'itemTaxRate'     => 0,
+                        'itemDiscount'    => 0,
+                        'itemTaxDiscount' => 0,
+                    ]);
+                }
 
+                $Order->index($Template);
+                PerchUtil::redirect($Perch->get_page().'?id='.$Order->id().'&created=1');
+            }
+        } else {
+            $Order->update($data);
+            $Order->index($Template);
+        }
 
-	if (is_object($Brand)) {
-		$details = $Brand->to_array();
-	}
+        if (is_object($Order)) {
+            $message = $HTML->success_message('Your order has been successfully edited. Return to %slisting%s', '<a href="'.$API->app_path().'">', '</a>');
+        } else {
+            $message = $HTML->failure_message('Sorry, that update was not successful.');
+        }
+    }
+
+    if (PerchUtil::get('created') && !$message) {
+        $message = $HTML->success_message('Your order has been successfully created. Return to %s listing%s', '<a href="'.$API->app_path().'">', '</a>');
+    }
+
+    if (is_object($Order)) {
+        $details = $Order->to_array();
+    }
