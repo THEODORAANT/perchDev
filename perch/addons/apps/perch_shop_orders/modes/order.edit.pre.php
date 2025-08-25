@@ -63,6 +63,7 @@
         $productID = PerchUtil::post('product');
         $qty       = (int)PerchUtil::post('qty');
 
+
         if (!$Order) {
             $Currency = $Currencies->get_default();
             if ($Currency) {
@@ -95,6 +96,7 @@
                         'itemTaxDiscount' => 0,
                     ]);
                 }
+
 
                 $Order->index($Template);
                 PerchUtil::redirect($Perch->get_page().'?id='.$Order->id().'&created=1');
