@@ -1,6 +1,18 @@
 <?php
     $Orders     = new PerchShop_Orders($API);
     $Currencies = new PerchShop_Currencies($API);
+    $Customers  = new PerchShop_Customers($API);
+
+    $customer_opts = [];
+    $customer_list = $Customers->all();
+    if (PerchUtil::count($customer_list)) {
+        foreach($customer_list as $Customer) {
+            $customer_opts[] = [
+                'value' => $Customer->id(),
+                'label' => $Customer->customerFirstName().' '.$Customer->customerLastName().' ('.$Customer->customerEmail().')',
+            ];
+        }
+    }
 
     $edit_mode = false;
     $Order     = false;
@@ -34,6 +46,11 @@
     if ($Form->submitted()) {
         $data = $Form->get_posted_content($Template, $Orders, $Order);
 
+        if (isset($data['customer']) && $data['customer'] !== '') {
+            $data['customerID'] = (int)$data['customer'];
+            unset($data['customer']);
+        }
+
         if (!$Order) {
             $Currency = $Currencies->get_default();
             if ($Currency) {
@@ -41,6 +58,10 @@
             }
             $Order = $Orders->create($data);
             if ($Order) {
+                // ensure customer is persisted on creation
+                if (isset($data['customerID'])) {
+                    $Order->update(['customerID' => $data['customerID']]);
+                }
                 $Order->assign_invoice_number();
                 $Order->index($Template);
                 PerchUtil::redirect($Perch->get_page().'?id='.$Order->id().'&created=1');
