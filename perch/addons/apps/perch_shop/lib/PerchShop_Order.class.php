@@ -255,7 +255,7 @@ class PerchShop_Order extends PerchShop_Base
 		return $Gateway->produce_payment_response($args, $gateway_opts);
 	}
 
-    private function assign_invoice_number()
+    public function assign_invoice_number()
     {
         $number = $this->get_next_invoice_number();
         $Settings = $this->api->get('Settings');

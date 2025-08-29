@@ -1,0 +1,16 @@
+<perch:extend path="shop/products/product.html" />
+<div class="package-product">
+    <h2><perch:shop id="title" /></h2>
+    <input type="hidden" name="product_id[]" value="<perch:shop id='productID' />" />
+    <perch:if exists="variants">
+        <select id="variant[]" name="variant[]">
+            <perch:variants>
+                <option value="<perch:variant id='productID' />"><perch:variant id='title' /></option>
+            </perch:variants>
+        </select>
+    <perch:else />
+        <input type="hidden" name="variant[]" value="<perch:shop id='productID' />" />
+    </perch:if>
+    <label>Qty</label>
+    <input type="number" name="qty[]" value="0" min="0" />
+</div>
