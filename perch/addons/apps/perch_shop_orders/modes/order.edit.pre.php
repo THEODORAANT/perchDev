@@ -2,6 +2,7 @@
     $Orders     = new PerchShop_Orders($API);
     $Currencies = new PerchShop_Currencies($API);
     $Customers  = new PerchShop_Customers($API);
+
     $Products   = new PerchShop_Products($API);
 
     $customer_opts = [];
@@ -23,6 +24,7 @@
             $product_opts[] = [
                 'value' => $Product->id(),
                 'label' => $Product->productTitle()
+
             ];
         }
     }
@@ -59,9 +61,11 @@
     if ($Form->submitted()) {
         $data = $Form->get_posted_content($Template, $Orders, $Order);
 
+
         $data['customerID'] = PerchUtil::post('customer');
         $productID = PerchUtil::post('product');
         $qty       = (int)PerchUtil::post('qty');
+
 
 
         if (!$Order) {
@@ -71,6 +75,10 @@
             }
             $Order = $Orders->create($data);
             if ($Order) {
+                // ensure customer is persisted on creation
+                if (isset($data['customerID'])) {
+                    $Order->update(['customerID' => $data['customerID']]);
+                }
                 $Order->assign_invoice_number();
 
                 if ($productID && $qty) {

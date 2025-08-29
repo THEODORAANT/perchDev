@@ -32,6 +32,7 @@
 
         echo $Form->fields_from_template($Template, $details);
         echo $Form->select_field('customer', 'Customer', $customer_opts, $details['customerID'] ?? '');
+
         echo '<a class="action" href="'.$API->app_path('perch_shop_orders').'/customers/edit/">Add new customer</a>';
         echo $Form->submit_field('btnSubmit', 'Save', $API->app_path());
 
