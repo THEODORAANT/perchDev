@@ -3,13 +3,28 @@
     $Currencies = new PerchShop_Currencies($API);
     $Customers  = new PerchShop_Customers($API);
 
+    $Products   = new PerchShop_Products($API);
+
     $customer_opts = [];
-    $customer_list = $Customers->all();
-    if (PerchUtil::count($customer_list)) {
-        foreach($customer_list as $Customer) {
+    $product_opts  = [];
+
+    $CustomerList = $Customers->all();
+    if (PerchUtil::count($CustomerList)) {
+        foreach($CustomerList as $Customer) {
             $customer_opts[] = [
                 'value' => $Customer->id(),
-                'label' => $Customer->customerFirstName().' '.$Customer->customerLastName().' ('.$Customer->customerEmail().')',
+                'label' => $Customer->customerFirstName().' '.$Customer->customerLastName()
+            ];
+        }
+    }
+
+    $ProductList = $Products->get_for_admin_listing();
+    if (PerchUtil::count($ProductList)) {
+        foreach($ProductList as $Product) {
+            $product_opts[] = [
+                'value' => $Product->id(),
+                'label' => $Product->productTitle()
+
             ];
         }
     }
@@ -46,10 +61,12 @@
     if ($Form->submitted()) {
         $data = $Form->get_posted_content($Template, $Orders, $Order);
 
-        if (isset($data['customer']) && $data['customer'] !== '') {
-            $data['customerID'] = (int)$data['customer'];
-            unset($data['customer']);
-        }
+
+        $data['customerID'] = PerchUtil::post('customer');
+        $productID = PerchUtil::post('product');
+        $qty       = (int)PerchUtil::post('qty');
+
+
 
         if (!$Order) {
             $Currency = $Currencies->get_default();
@@ -63,6 +80,32 @@
                     $Order->update(['customerID' => $data['customerID']]);
                 }
                 $Order->assign_invoice_number();
+
+                if ($productID && $qty) {
+                    $OrderItems = new PerchShop_OrderItems($API);
+                    $Product = $Products->find($productID);
+                    $price = 0;
+                    if ($Product) {
+                        $prod_data = $Product->to_array();
+                        if (isset($prod_data['current_price'])) {
+                            $price = $prod_data['current_price'];
+                        }
+                    }
+                    $OrderItems->create([
+                        'itemType'        => 'product',
+                        'orderID'         => $Order->id(),
+                        'productID'       => $productID,
+                        'itemPrice'       => $price,
+                        'itemTax'         => 0,
+                        'itemTotal'       => $price * $qty,
+                        'itemQty'         => $qty,
+                        'itemTaxRate'     => 0,
+                        'itemDiscount'    => 0,
+                        'itemTaxDiscount' => 0,
+                    ]);
+                }
+
+
                 $Order->index($Template);
                 PerchUtil::redirect($Perch->get_page().'?id='.$Order->id().'&created=1');
             }

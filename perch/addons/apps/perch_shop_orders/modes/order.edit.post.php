@@ -25,18 +25,14 @@
 
     echo $Form->form_start('edit');
 
+        echo $Form->select_field('customer', 'Customer', $customer_opts, $details['customerID'] ?? '');
+        echo '<a class="action" href="'.$API->app_path('perch_shop_orders').'/customers/edit/">Add new customer</a>';
+        echo $Form->select_field('product', 'Product', $product_opts, '');
+        echo $Form->text_field('qty', 'Quantity', '1');
+
         echo $Form->fields_from_template($Template, $details);
         echo $Form->select_field('customer', 'Customer', $customer_opts, $details['customerID'] ?? '');
-        echo '<script>
-                var sel = document.querySelector("select[name=customer]");
-                var txt = document.querySelector("input[name=customer]");
-                if (sel && txt) {
-                    txt.value = sel.value;
-                    sel.addEventListener("change", function() {
-                        txt.value = this.value;
-                    });
-                }
-              </script>';
+
         echo '<a class="action" href="'.$API->app_path('perch_shop_orders').'/customers/edit/">Add new customer</a>';
         echo $Form->submit_field('btnSubmit', 'Save', $API->app_path());
 
