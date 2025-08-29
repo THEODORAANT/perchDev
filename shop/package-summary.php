@@ -19,7 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $package = perch_shop_create_package([]);
             if ($package) {
+
                 perch_shop_update_package_status('confirmed');
+
                 PerchUtil::redirect('checkout.php');
             }
         } catch (Exception $e) {
