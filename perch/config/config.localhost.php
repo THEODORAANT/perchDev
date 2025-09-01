@@ -7,7 +7,7 @@
     define("PERCH_DB_USERNAME", 'root');
     define("PERCH_DB_PASSWORD", '');
     define("PERCH_DB_SERVER", "localhost");
-    define("PERCH_DB_DATABASE", "perchdev");
+    define("PERCH_DB_DATABASE", "weightloss");
 
 
 	define('PERCH_DB_PREFIX', 	'p4_');

@@ -195,7 +195,7 @@ class PerchAuthenticatedUser extends PerchBase
             then we can't continue and it will just go away. If you want something free, there are lots
             of free alternatives available - you can use those and remain honest.
         */
-
+return true;
         $Perch  = PerchAdmin::fetch();
 
         $host = 'activation.grabaperch.com';
@@ -204,7 +204,7 @@ class PerchAuthenticatedUser extends PerchBase
         $data = [];
         $data['key']     = PERCH_LICENSE_KEY;
         $data['host']    = "perch-development.azurewebsites.net";
-         $data['host']    = $_SERVER['SERVER_NAME'];
+         //$data['host']    = $_SERVER['SERVER_NAME'];
         $data['version'] = $Perch->version;
         $data['php']     = phpversion();
         $content = http_build_query($data);

@@ -2,11 +2,11 @@
     switch($_SERVER['SERVER_NAME']) {
 
         case '':
-            include(__DIR__.'/config.ra-d41d-cd98.php');
+            include(__DIR__.'/config.localhost.php');
             break;
 
         default:
-        include(__DIR__.'/config.ra-d41d-cd98.php');
+        include(__DIR__.'/config.localhost.php');
           //  include('config.production.php');
             break;
     }
@@ -16,7 +16,7 @@
     define('PERCH_EMAIL_FROM', 'terrencelovegrove@outlook.com');
     define('PERCH_EMAIL_FROM_NAME', 'Terrence Lovegrove');
 
-    define('PERCH_LOGINPATH', '/perch-dev/perch');
+    define('PERCH_LOGINPATH', '/perchDev/perch');
 
     define('PERCH_PATH', str_replace(DIRECTORY_SEPARATOR.'config', '', __DIR__));
     define('PERCH_CORE', PERCH_PATH.DIRECTORY_SEPARATOR.'core');
