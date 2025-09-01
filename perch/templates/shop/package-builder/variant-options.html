@@ -1,0 +1,7 @@
+<perch:if exists="variants">
+    <perch:variants>
+        <option value="<perch:variant id='productID' />"><perch:shop id='title' /> - <perch:variant id='title' /></option>
+    </perch:variants>
+<perch:else />
+    <option value="<perch:shop id='productID' />"><perch:shop id='title' /></option>
+</perch:if>
