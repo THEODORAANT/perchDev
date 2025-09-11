@@ -55,4 +55,4 @@
 			curl_close($ch);
 
 
-  $Settings->set('perch_members_update', '1.6.6');
+  $Settings->set('perch_members_update', '1.6.7');
