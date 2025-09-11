@@ -11,7 +11,7 @@
             break;
     }
 
-    define('PERCH_LICENSE_KEY', 'R42308-LWM253-UNP582-WFJ012-GLQ018');
+    define('PERCH_LICENSE_KEY', '');
    // define('PERCH_LICENSE_KEY', 'R4-LOCAL-XAV221-KHZ122-FVN017');
     define('PERCH_EMAIL_FROM', 'terrencelovegrove@outlook.com');
     define('PERCH_EMAIL_FROM_NAME', 'Terrence Lovegrove');
@@ -36,5 +36,5 @@ define('PERCH_EMAIL_HOST', 'sandbox.smtp.mailtrap.io');
 define('PERCH_EMAIL_AUTH', true);
 //define('PERCH_EMAIL_SECURE', 'ssl');
 define('PERCH_EMAIL_PORT', 2525);
-define('PERCH_EMAIL_USERNAME', '68250d4952219e');
-define('PERCH_EMAIL_PASSWORD', 'd00dfc1d33635d');
+define('PERCH_EMAIL_USERNAME', '');
+define('PERCH_EMAIL_PASSWORD', '');
