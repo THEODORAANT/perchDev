@@ -99,11 +99,6 @@ if($filter!="memberProperties"){
     }
     }
 
- $sort=false;
-if (isset($_GET['sort']) && $_GET['sort'] != '') {
-        $sort = $_GET['sort'];
-
-        }
     switch ($filter) {
 
         case 'tag':
@@ -111,23 +106,23 @@ if (isset($_GET['sort']) && $_GET['sort'] != '') {
             break;
 
         case 'email':
-            $members = $Members->get_by_email($email);
+            $members = $Members->get_by_email($email, $Paging);
             break;
 
         case 'status':
             if ($status == 'all') {
                 $members = $Members->all($Paging);
             }else{
-                $members = $Members->get_by_status($status,$sort, $Paging);
+                $members = $Members->get_by_status($status, false, $Paging);
             }
              break;
         case 'memberProperties':
-          $members = $Members->get_by_properties($filerdata);
+          $members = $Members->get_by_properties($filerdata, $Paging);
           break;
 
 
         default:
-            $members = $Members->get_by_status('pending');
+            $members = $Members->get_by_status('pending', false, $Paging);
 
 
             break;
