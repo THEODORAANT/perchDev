@@ -35,9 +35,9 @@ class PerchMembers_Members extends PerchAPI_Factory
 	         foreach($filterdata as $key => $value){
               $value=json_decode($value, true);
               //print_r($value);print_r($value["status"]);
-              if($value["status"]!=null && !$results) {
-                  // echo "1";
-                $callstatus=$this->get_by('memberStatus', $value["status"], $Paging);
+                if($value["status"]!=null && !$results) {
+                    // echo "1";
+                  $callstatus=$this->get_by('memberStatus', $value["status"], false, $Paging);
                 if($callstatus!=null){
                    $results=true;
                   return $callstatus;
@@ -46,9 +46,9 @@ class PerchMembers_Members extends PerchAPI_Factory
 
               }
 
-                 if($value["email"]!=null && !$results) {
-                      //  echo "2";
-                        $callstatus=$this->get_by('memberEmail', $value["email"], $Paging);
+                if($value["email"]!=null && !$results) {
+                        //  echo "2";
+                          $callstatus=$this->get_by('memberEmail', $value["email"], false, $Paging);
                          if($callstatus!=null){
                              $results=true;
                              return $callstatus;
@@ -75,7 +75,7 @@ class PerchMembers_Members extends PerchAPI_Factory
                         }
 
     			     // print_r( $namearr);
-    			     $callstatus=$this->get_by('memberProperties', $namearr, $Paging);
+                               $callstatus=$this->get_by('memberProperties', $namearr, false, $Paging);
                       if($callstatus!=null){
                               $results=true;
                             return $callstatus;
@@ -91,7 +91,7 @@ class PerchMembers_Members extends PerchAPI_Factory
 			        	'op'=>"between"
 			            );
 			           // print_r( $daterange);
-                         return $this->get_by('memberCreated', $daterange , $Paging);
+                           return $this->get_by('memberCreated', $daterange , false, $Paging);
                     }
 
 
@@ -105,9 +105,9 @@ class PerchMembers_Members extends PerchAPI_Factory
 		return $this->get_by('memberStatus', $status, $sort,$Paging);
 	}
 
-	public function get_by_email($email='nan', $Paging=false)
+        public function get_by_email($email='nan', $Paging=false)
     {
-        return $this->get_by('memberEmail', $email, $Paging);
+        return $this->get_by('memberEmail', $email, false, $Paging);
     }
 
 	private function _check_for_spam($fields, $environment, $akismetAPIKey=false)
