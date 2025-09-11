@@ -54,8 +54,8 @@
         // PerchUtil::debug($data);
 
     	$result = false;
-
-
+    	
+    	
     	if (is_object($Member)) {
     	    $Member->update($data);
             $result = true;
@@ -137,7 +137,7 @@
                                 }
                             }
              }
-
+           $file =$_FILES;
           if (isset($file['new-document']) && $file['new-document']!='' &&  $file['new-document']['size']!=0) {
 
                 $Document = $Documents->upload($file['new-document'],$Member->id());

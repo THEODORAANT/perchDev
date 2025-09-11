@@ -7,7 +7,7 @@ class PerchMembers_Documents extends PerchAPI_Factory
 	protected $singular_classname = 'PerchMembers_Document';
 
 	protected $default_sort_column = 'date';
-	public $static_fields = array('documentID', 'memberID', 'documentName', 'documenUploadDate');
+	public $static_fields = array( 'memberID', 'documentName', 'documenUploadDate');
     public     $default_fields = '
     				<perch:members type="file" id="documentFile" required="true" label="Email" listing="true" order="98" />
                     <perch:members type="date" id="documenUploadDate" required="true" label="Joined" listing="true" format="d F Y" order="99" />
@@ -31,7 +31,7 @@ class PerchMembers_Documents extends PerchAPI_Factory
                     ORDER BY d.documenUploadDate';
 
         $rows = $this->db->get_rows($sql);
-
+       // print_r( $rows);
         $target_dir = __DIR__."/documents/";
         if (PerchUtil::count($rows)) {
           foreach($rows as $row) {
@@ -81,7 +81,7 @@ class PerchMembers_Documents extends PerchAPI_Factory
 	public function upload($file,$memberID)
 	{
 
-      	$target_dir = __DIR__."/documents/";
+      	$target_dir = PerchUtil::file_path(PERCH_RESFILEPATH).'/perch_members';
       	$filef =  $file['name'];
       	$path = pathinfo($filef);
       	$filename = $path['filename'];
@@ -93,17 +93,28 @@ class PerchMembers_Documents extends PerchAPI_Factory
       if (file_exists($path_filename_ext)) {
        echo "Sorry, file already exists.";
        }else{
-       move_uploaded_file($temp_name,$path_filename_ext);
+          if (!file_exists(PERCH_RESFILEPATH.'/perch_members'))
+          {
+                 // create directory/folder uploads.
+               mkdir(PERCH_RESFILEPATH.'/perch_members', 0777, true);
+           }
+
+       $filename = $file['name'];
+       PerchUtil::move_uploaded_file($temp_name, $target_dir.'/'.$filename);
+		$data = array();
+		$data['memberID'] =$memberID;
+		$data['documentName'] =$filename;
+		$data['documenUploadDate'] = date('Y-m-d H:i:s');
+
+        $this->create($data);
+
        //echo "Congratulations! File Uploaded Successfully.";
        //echo  $HTML->success_message('Congratulations! File Uploaded Successfully');
        }
 		// Tag wasn't found, so create a new one and return it.
         //'documentID', 'memberID', 'documentName', 'documenUploadDate');
-		$data = array();
-		$data['memberID'] =$memberID;
-		$data['documentName'] =$filename.".".$ext;
-		$data['documenUploadDate'] = date('Y-m-d H:i:s');
-        $this->create($data);
+
+
 		}
 
 

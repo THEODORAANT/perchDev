@@ -11,7 +11,6 @@ class PerchMembers_Auth extends PerchAPI_Factory
 
 	function __construct($api=false)
     {
-
     	$this->authenticator_path = PerchUtil::file_path(PERCH_PATH.'/addons/apps/perch_members/authenticators/');
     	parent::__construct($api);
     }

@@ -59,7 +59,7 @@
                     echo '<tr>';
                         echo '<td class="action">'.$Form->checkbox('tag-'.$Tag->id(), '1', '1').'</td>';
                         echo '<td>'.PerchUtil::html($Tag->tag()).'</td>';
-                        echo '<td>'.PerchUtil::html($Tag->tagExpires() ? strftime('%d %b %Y', strtotime($Tag->tagExpires())) : '-').'</td>';
+                        echo '<td>'.PerchUtil::html($Tag->tagExpires() ? date('d M Y', strtotime($Tag->tagExpires())) : '-').'</td>';
                     echo '</tr>';
                 }
             }
@@ -94,12 +94,13 @@
             <tbody>
         <?php
             if (PerchUtil::count($documents)) {
-            	$target_dir ="/perch/addons/apps/perch_members/documents/";
+
+            	$target_dir = PerchUtil::file_path(PERCH_RESPATH).'/perch_members/';
                 foreach($documents as $Document) {
                     echo '<tr>';
                         echo '<td class="action">'.PerchUtil::html($Document->documentID()).'</td>';
                         echo '<td><a target="_blank" href="'.$target_dir.$Document->documentName().'">'.PerchUtil::html($Document->documentName()).'</a></td>';
-                        echo '<td>'.PerchUtil::html($Document->documenUploadDate() ? strftime('%d %b %Y', strtotime($Document->documenUploadDate())) : '-').'</td>';
+                        echo '<td>'.PerchUtil::html($Document->documenUploadDate() ? date('d M Y', strtotime($Document->documenUploadDate())) : '-').'</td>';
                         echo '<td>'.PerchUtil::html($Document->documentDeleted() ? 'Archived' : 'Available').'</td>';
                     echo '</tr>';
                 }
@@ -139,7 +140,7 @@
                               echo '<tr>';
 
                                   echo '<td>'.PerchUtil::html($Note->note()).'</td>';
-                                  echo '<td>'.PerchUtil::html($Note->noteDate() ? strftime('%d %b %Y', strtotime($Note->noteDate())) : '-').'</td>';
+                                  echo '<td>'.PerchUtil::html($Note->noteDate() ? date('d M Y', strtotime($Note->noteDate())) : '-').'</td>';
                                     echo '<td>'.PerchUtil::html($Note->addedBy()).'</td>';
                               echo '</tr>';
                           }

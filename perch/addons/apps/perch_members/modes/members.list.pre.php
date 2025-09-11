@@ -2,8 +2,8 @@
 
     // Try to update
     $Settings = $API->get('Settings');
+    if ($Settings->get('perch_members_update')->val()!='1.6.7') {
 
-    if ($Settings->get('perch_members_update')->val()!='1.6.5') {
         include('update.php');
     }
 
@@ -99,11 +99,7 @@ if($filter!="memberProperties"){
     }
     }
 
- $sort=false;
-if (isset($_GET['sort']) && $_GET['sort'] != '') {
-        $sort = $_GET['sort'];
 
-        }
     switch ($filter) {
 
         case 'tag':
@@ -118,7 +114,7 @@ if (isset($_GET['sort']) && $_GET['sort'] != '') {
             if ($status == 'all') {
                 $members = $Members->all($Paging);
             }else{
-                $members = $Members->get_by_status($status,$sort, $Paging);
+                $members = $Members->get_by_status($status);
             }
              break;
         case 'memberProperties':

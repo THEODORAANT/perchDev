@@ -18,13 +18,7 @@
 		<perch:error for="email" type="required">Please add a your email address</perch:error>
 		<perch:error for="email" type="format">Please check a your email address</perch:error>
 	</div>
-	<div >
-		<perch:label for="phone">Phone</perch:label>
-		<perch:input  type="number" id="phone" required="true" placeholder="Phone" /> <!--helper="PerchMembers_Members::check_phone" />-->
-		<perch:error for="phone" type="required">Please add your phone address</perch:error>
-		<perch:error for="phone" type="helper">That phone is already in use</perch:error>
 
-	</div>
 	<div>
 		<perch:input type="submit" value="Save" />
 		<perch:input type="hidden" id="token" />

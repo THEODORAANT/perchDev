@@ -2,9 +2,8 @@
 	if ($CurrentUser->logged_in() && $CurrentUser->has_priv('perch_members')) {
 	    $this->register_app('perch_members', 'Members', 2, 'Manage site members', '1.6.6');
 	    $this->require_version('perch_members', '3.1.1');
-            $this->add_setting('perch_members_login_page', 'Login page path', 'text', '/members/login.php?r={returnURL}');
-            $this->add_setting('perch_members_akismet_key', 'Akismet API key', 'text', '');
-        }
+	    $this->add_setting('perch_members_login_page', 'Login page path', 'text', '/members/login.php?r={returnURL}');
+	}
 
 	spl_autoload_register(function($class_name){
     	if (strpos($class_name, 'PerchMembers')===0) {

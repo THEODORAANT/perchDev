@@ -1,0 +1,66 @@
+<perch:form id="register" method="post" app="perch_members" type="boardmember">
+	<div class="row justify-content-center mt-6">
+		<div class="form-group col-lg-10 col-12">
+			<perch:input type="text" class="form-control register" id="company" required placeholder="Ονομα εταιρείας" >
+			<perch:error for="company" type="required">Προσθέστε το όνομα της εταιρείας σας</perch:error>
+		</div>
+	</div>
+	<div class="row justify-content-center mt-3">
+		<div class="form-group col-lg-10 col-12">
+			<perch:input type="text" class="form-control register" id="first_name" required placeholder="Ονομα">
+			<perch:error for="first_name" type="required">Προσθέστε το όνομά σας</perch:error>
+		</div>
+	</div>
+	<div class="row justify-content-center mt-3">
+		<div class="form-group col-lg-10 col-12">
+			<perch:input type="text" class="form-control register" id="last_name" required placeholder="Επίθετο">
+			<perch:error for="last_name" type="required">Προσθέστε το επίθετο σας </perch:error>
+		</div>
+	</div>
+	<div class="row justify-content-center mt-3"> 
+		<div class="form-group col-lg-10 col-12">
+			<perch:input type="email" class="form-control register" id="email" required placeholder="Email" helper="PerchMembers_Members::check_email">
+			<perch:error for="email" type="required">Προσθέστε ενα email </perch:error>
+			<perch:error class="email-error" for="email" type="helper" >Το email έχει ήδη χρησιμοποιηθεί</perch:error>
+		</div>
+	</div>
+	<div class="row justify-content-center mt-3">
+		<div class="form-group col-lg-10 col-12">
+			<perch:input type="password" class="form-control register" id="password" required placeholder="Κωδικός Πρόσβσης">
+			<perch:error for="password" type="required">Προσθέστε Κωδικό Πρόσβσης</perch:error>
+		</div>
+	</div>
+	<div class="row justify-content-center mt-4">
+		<div class="form-check col-lg-10 col-12 text-left mleft">
+			<perch:input type="checkbox" class="form-check-input" required id="terms">
+			<perch:label class="form-check-label h1-banner" for="terms">Αποδέχομαι <span class="sign-in">Ορους και Προυποθεσεις</span> </perch:label>
+		</div>
+	</div>
+	<div class="row justify-content-center mt-5">
+		<div class="col-lg-10 col-12 text-left">
+			<perch:input type="hidden" id="lang" value="gr" />
+			<perch:input type="submit" class="btn btn-learn" value="Δημιουρία Νέου Λογαριασμού" >
+		</div>  
+	</div>
+	<perch:success>
+	<div class="row justify-content-center">
+		<div class="col-lg-10 col-md-8 col-sm-6">
+			<div class="container">
+				<div class="row justify-content-center ">
+					<div class="col-lg-12 col-md-12 col-sm-12 text-center login">
+						<img src="../../../../../../../images/register/tick.png" class="my-3" alt="" width="60">
+						<h2 class="">Ευχαριστούμε για την εγγραφή σας!</h2>
+						<p>Θα λάβετε ενα ηλεκτρονικό μήνυμα σύντομα!</p>
+						<a href="/signin" class="mb-5">Συνδεθείτε στο Λογαριασμό σας</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</perch:success>
+	<div class="row justify-content-center mt-4">
+		<div class="col-lg-10 col-12 text-left ml-3 mb-5">
+			<h6 class="h1-banner ml-4">Έχετε ήδη Λογαριασμό ? <span class="sign-in"> <a href="/signin"> Συνδεση Τώρα  </a> </span> </h6>
+		</div>
+	</div>
+</perch:form>

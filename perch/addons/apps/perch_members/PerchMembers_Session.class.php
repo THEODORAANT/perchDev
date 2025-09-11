@@ -10,13 +10,7 @@ class PerchMembers_Session
 
 
 	private $details = array();
-public function __construct($params = array())
-    {
-        foreach ($params as $key => $value)
-        {
-            $this->{$key} = $value;
-        }
-    }
+
 	public static function fetch()
 	{	    
         if (!isset(self::$instance)) {

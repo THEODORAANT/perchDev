@@ -27,7 +27,6 @@
 			$response = curl_exec($ch);
 			PerchUtil::debug($response);
 			$http_status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			//echo $http_status ;
 			if ($http_status!=200) {
 			    $response = false;
 			    PerchUtil::debug('Not HTTP 200: '.$http_status);
@@ -35,12 +34,13 @@
 
 			    $result=json_decode($response);
 
-
 			    if(isset($result->sqlUpdates)){
 			         $sql=$result->sqlUpdates;
+
 			         $sql = str_replace('__PREFIX__', PERCH_DB_PREFIX, $sql);
 
                     $DB = PerchDB::fetch();
+
 
                     $statements = explode(';', $sql);
                                 foreach($statements as $statement) {
@@ -48,11 +48,11 @@
                                     if ($statement!='') $DB->execute($statement);
                                 }
 
-
+                    $Settings->set('perch_members_update', '1.6.6');
 
 			    }
 
 			curl_close($ch);
 
 
-  $Settings->set('perch_members_update', '1.6.6');
+

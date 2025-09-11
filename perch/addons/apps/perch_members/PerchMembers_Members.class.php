@@ -100,37 +100,15 @@ class PerchMembers_Members extends PerchAPI_Factory
 
 		return $results;
 	}
-	public function get_by_status($status='nan',$sort=false, $Paging=false)
+	public function get_by_status($status='nan', $Paging=false)
 	{
-		return $this->get_by('memberStatus', $status, $sort,$Paging);
+		return $this->get_by('memberStatus', $status, $Paging);
 	}
 
 	public function get_by_email($email='nan', $Paging=false)
     {
         return $this->get_by('memberEmail', $email, $Paging);
     }
-
-	private function _check_for_spam($fields, $environment, $akismetAPIKey=false)
-    {
-    	if (isset($fields['honeypot']) && trim($fields['honeypot'])!='') {
-    		PerchUtil::debug('Honeypot field completed: message is spam');
-            return true;
-    	}
-
-    	if ($akismetAPIKey) {
-	    	if (!class_exists('PerchMembers_Akismet')) {
-	    		include_once('PerchMembers_Akismet.class.php');
-	    	}
-	        if (PerchMembers_Akismet::check_message_is_spam($akismetAPIKey, $fields, $environment)) {
-	            PerchUtil::debug('Message is spam');
-	            return true;
-	        }else{
-	            PerchUtil::debug('Message is not spam');
-	        }
-	    }
-        return false;
-    }
-
 
 	public function register_with_form($SubmittedForm)
 	{
@@ -170,25 +148,6 @@ class PerchMembers_Members extends PerchAPI_Factory
 	    	}
 
 	    	$member['memberProperties'] = PerchUtil::json_safe_encode($properties);
-	    	// Anti-spam
-            $Settings = $this->api->get('Settings');
-            $akismetAPIKey = $Settings->get('perch_members_akismet_key')->val();
-
-             $spam = false;
-            $antispam = $SubmittedForm->get_antispam_values();
-
-            $environment = $_SERVER;
-
-            /*$spam_data = array();
-            $spam_data['fields'] = $antispam;
-            $spam_data['environment'] = $environment;
-             $data['commentSpamData'] = PerchUtil::json_safe_encode($spam_data);
-            $data['commentIP'] = ip2long($_SERVER['REMOTE_ADDR']);*/
-
-
-           $spam = $this->_check_for_spam($antispam, $environment, $akismetAPIKey);
-           if (!$spam) {
-
 
 	    	// Password
             $clear_pwd = $member['memberPassword'];
@@ -252,7 +211,6 @@ class PerchMembers_Members extends PerchAPI_Factory
 	    			));
 	    	}
 
-		}
 		}
 	}
 
