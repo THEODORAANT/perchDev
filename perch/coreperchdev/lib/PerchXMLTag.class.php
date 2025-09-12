@@ -4,6 +4,12 @@
     {
         public $attributes      = [];
         public $data_attributes = [];
+        /**
+         * Explicitly defined group property used when annotating tags with
+         * grouping information. Defining the property avoids PHP 8.2 warnings
+         * about creating dynamic properties at runtime.
+         */
+        public $group = false;
         private $tag;
         
         public function __construct($tag, $boolean_attributes = true)
