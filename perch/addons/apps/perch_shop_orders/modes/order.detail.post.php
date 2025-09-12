@@ -25,18 +25,15 @@
     $output2.= '<div class="row logo-bckgr p-4">';
 
         $logo = $Settings->get('logoPath')->settingValue();
-        $base = rtrim(PerchSystem::get_site_url(), '/');
-        $invoice_url = $base . '/perch/addons/apps/perch_shop/assets/invoice.png';
-        $line_url    = $base . '/perch/addons/apps/perch_shop/assets/line2.png';
+
 
         if ($logo) {
-        $logo_url = $base . '/' . ltrim($logo, '/');
-        echo '<img src="'.PerchUtil::html($logo_url).'"  class="preview" alt="" width="300" />';
-            $output2.= '<img src="'.PerchUtil::html($logo_url).'"  class="preview" alt="" width="300" />';
+        echo '<img src="../../../../../../'.PerchUtil::html($logo).'"  class="preview" alt="" width="300" />';
+            $output2.= '<img src="../../../../../../'.PerchUtil::html($logo).'"  class="preview" alt="" width="300" />';
 
         }
 
-        $output2.= '<img class="float-right mt-4 ml-8" src="'.PerchUtil::html($invoice_url).'" width="200">';
+        $output2.= '<img class="float-right mt-4 ml-8" src="'.$_SERVER['DOCUMENT_ROOT'].'/perch/addons/apps/perch_shop/assets/invoice.png" width="200">';
 
     $output2.= '</div>';
 
@@ -44,7 +41,7 @@
     $output2.= '<div class="row">';
 
     $output2.= $HTML->heading2('ORDER INFO');
-    $output2.= '<img src="'.PerchUtil::html($line_url).'" class="line-info">';
+    $output2.= '<img src="'.$_SERVER['DOCUMENT_ROOT'].'/perch/addons/apps/perch_shop/assets/line2.png" class="line-info">';
     
     $output2.= '<div class="inner">';
     $output2.=  '<table class="d factsheet text-uppercase">';
@@ -129,7 +126,7 @@
 
 
 $output2.=  $HTML->heading2('CUSTOMER INFO');
-$output2.= '<img src="'.PerchUtil::html($line_url).'" class="line-info">';
+$output2.= '<img src="'.$_SERVER['DOCUMENT_ROOT'].'/perch/addons/apps/perch_shop/assets/line2.png" class="line-info">';
 
     $output2.=  '<div class="inner"> <table class="d factsheet text-uppercase">';
 
@@ -157,7 +154,6 @@ $output2.= '<img src="'.PerchUtil::html($line_url).'" class="line-info">';
     $output2.=  '<tr>';
         $output2.=  '<th class="text-left text-uppercase w-100" >'.$Lang->get('Billing address: ').'</th>';
         $output2.=  '<td class="text-left">';
-        if ($BillingAdr) {
             $output2.=  $HTML->encode($BillingAdr->addressFirstName().' '.$BillingAdr->addressLastName()).'<br>';
             $output2.= _if($BillingAdr->addressCompany(), $HTML);
             $output2.= _if($BillingAdr->get('address_1'), $HTML);
@@ -166,16 +162,12 @@ $output2.= '<img src="'.PerchUtil::html($line_url).'" class="line-info">';
             $output2.= _if($BillingAdr->get('county'), $HTML);
             $output2.= _if($BillingAdr->get('postcode'), $HTML);
             $output2.= _if($BillingAdr->get_country_name(), $HTML);
-        }else{
-            $output2.=  $HTML->encode($Lang->get('No billing address'));
-        }
         $output2.=  '</td>';
     $output2.=  '</tr>';
 
     $output2.=  '<tr>';
         $output2.=  '<th class="text-left">'.$Lang->get('Shipping address: ').'</th>';
         $output2.=  '<td class="text-left">';
-        if ($ShippingAdr) {
             $output2.=  $HTML->encode($ShippingAdr->addressFirstName().' '.$ShippingAdr->addressLastName()).'<br>';
             $output2.= _if($ShippingAdr->addressCompany(), $HTML);
             $output2.= _if($ShippingAdr->get('address_1'), $HTML);
@@ -184,9 +176,6 @@ $output2.= '<img src="'.PerchUtil::html($line_url).'" class="line-info">';
             $output2.= _if($ShippingAdr->get('county'), $HTML);
             $output2.= _if($ShippingAdr->get('postcode'), $HTML);
             $output2.= _if($ShippingAdr->get_country_name(), $HTML);
-        }else{
-            $output2.=  $HTML->encode($Lang->get('No shipping address'));
-        }
         $output2.=  '</td>';
     $output2.=  '</tr>';
 
@@ -308,7 +297,6 @@ $output.=  $HTML->heading2('Customer');
     $output.=  '<tr>';
         $output.=  '<th>'.$Lang->get('Billing address').'</th>';
         $output.=  '<td>';
-        if ($BillingAdr) {
             $output.=  $HTML->encode($BillingAdr->addressFirstName().' '.$BillingAdr->addressLastName()).'<br>';
             $output.= _if($BillingAdr->addressCompany(), $HTML);
             $output.= _if($BillingAdr->get('address_1'), $HTML);
@@ -317,16 +305,12 @@ $output.=  $HTML->heading2('Customer');
             $output.= _if($BillingAdr->get('county'), $HTML);
             $output.= _if($BillingAdr->get('postcode'), $HTML);
             $output.= _if($BillingAdr->get_country_name(), $HTML);
-        }else{
-            $output.=  $HTML->encode($Lang->get('No billing address'));
-        }
         $output.=  '</td>';
     $output.=  '</tr>';
 
     $output.=  '<tr>';
         $output.=  '<th>'.$Lang->get('Shipping address').'</th>';
         $output.=  '<td>';
-        if ($ShippingAdr) {
             $output.=  $HTML->encode($ShippingAdr->addressFirstName().' '.$ShippingAdr->addressLastName()).'<br>';
             $output.= _if($ShippingAdr->addressCompany(), $HTML);
             $output.= _if($ShippingAdr->get('address_1'), $HTML);
@@ -335,9 +319,6 @@ $output.=  $HTML->heading2('Customer');
             $output.= _if($ShippingAdr->get('county'), $HTML);
             $output.= _if($ShippingAdr->get('postcode'), $HTML);
             $output.= _if($ShippingAdr->get_country_name(), $HTML);
-        }else{
-            $output.=  $HTML->encode($Lang->get('No shipping address'));
-        }
         $output.=  '</td>';
     $output.=  '</tr>';
 

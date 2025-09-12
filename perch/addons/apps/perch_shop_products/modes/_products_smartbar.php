@@ -16,12 +16,5 @@
         'link'  => $API->app_nav('perch_shop_products'),
         'icon'  => 'ext/o-shirt',
     ]);
-    $Smartbar->add_item([
-            'active'   => false,
-            'title'    => 'Reorder',
-            'link'     => '/addons/apps/perch_shop_products/reorder',
-            'position' => 'end',
-            'icon'     => 'core/menu',
-        ]);
 
     echo $Smartbar->render();

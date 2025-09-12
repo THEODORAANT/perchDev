@@ -382,32 +382,32 @@ class PerchShop_Product extends PerchShop_Base
                 // Whos tax rate do we use?
                 $TaxGroup = $this->get_tax_group();
 
-                // Always get the home tax rate
-                $home_tax_rate = $TaxRates->get_rate_for_location((int)$TaxGroup->id(), (int)$HomeTaxLocation->id());
-
                 if ($TaxGroup->groupTaxRate()=='buyer') {
                     $TaxLocation = $CustomerTaxLocation;
                 }else{
                     $TaxLocation = $HomeTaxLocation;
                 }
 
-                // Rate to charge based on buyer location decision
+                // Which rate to charge? Standard, reduced etc
                 $tax_rate = $TaxRates->get_rate_for_location((int)$TaxGroup->id(), (int)$TaxLocation->id());
 
-                // Calculate exclusive price
+                // Add or remove tax?
+                $multiplier = 1 + ($tax_rate/100);
+
                 if ($prices_tax_inclusive) {
-                    $exclusive_price = $base_price / (1 + $home_tax_rate/100);
+                    // remove tax from base price
+                    $exclusive_price = $base_price / $multiplier;
+                    $inclusive_price = $base_price;
                 }else{
+                    // add tax to base price
                     $exclusive_price = $base_price;
+                    $inclusive_price = $base_price * $multiplier;
                 }
 
-                // Calculate inclusive price using buyer's tax rate
-                $inclusive_price = $exclusive_price * (1 + $tax_rate/100);
-
                 $Totaliser->add_to_items($exclusive_price*$qty, $tax_rate);
-
+                
                 if ($customer_pays_tax) {
-                    $Totaliser->add_to_tax(($inclusive_price - $exclusive_price)*$qty, $tax_rate);
+                    $Totaliser->add_to_tax(($inclusive_price - $exclusive_price)*$qty, $tax_rate);    
                 }
 
                 if (!$customer_pays_tax) {
@@ -537,34 +537,6 @@ class PerchShop_Product extends PerchShop_Base
                 ]);
     }
 
-   public function update_tree_position($parentID=false, $order=false)
-    {
-        //PerchUtil::debug(sprintf('Update catID %s to parentID %s and order %s', $this->id(), $parentID, $order), 'notice');
-
-        $data = array();
-
-        if ($parentID !== false) {
-            if ($parentID === null) {
-                $data['parentID'] = null;
-            } else {
-                $data['parentID'] = $parentID;
-            }
-        } else {
-            $data['parentID'] = $this->parentID();
-        }
-
-        if ($order) {
-            $data['productOrder'] = $order;
-        }else{
-            $data['productOrder'] = $this->find_next_child_order($data['parentID']);
-        }
-
-      /*  if ($data['parentID'] == 'null') {
-            $data['parentID'] = '0';
-        }*/
-
-        if (count($data)) $this->update($data);
-    }
 
     public function get_property($prop, PerchShop_Product $Parent=null)
     {

@@ -137,19 +137,6 @@ class PerchShop_Products extends PerchShop_Factory
 		}
 		return $items;
 	}
-	public function get_by_parent($parentID)
-    	{
-    	if($parentID){
-    	    $sql = 'SELECT * FROM '.$this->table.'
-            	            WHERE parentID='.$this->db->pdb((int)$parentID).'
-            	            ORDER BY productOrder ASC';
-    	}else{
-    	    $sql = 'SELECT * FROM '.$this->table.'  ORDER BY productOrder ASC';
-    	}
-
-    		$rows   = $this->db->get_rows($sql);
-    		return $this->return_instances($rows);
-    	}
 
 	public function find_from_options($productID, $options)
 	{

@@ -474,22 +474,3 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__shop_sales` (
   `saleDeleted` datetime DEFAULT NULL,
   PRIMARY KEY (`saleID`)
 ) CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `__PREFIX__shop_packages` (
-  `packageID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `customerID` int(10) unsigned NOT NULL DEFAULT '0',
-  `month` char(7) NOT NULL DEFAULT '',
-  `status` char(32) NOT NULL DEFAULT '',
-  PRIMARY KEY (`packageID`),
-  KEY `idx_customer` (`customerID`)
-) CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `__PREFIX__shop_package_items` (
-  `itemID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `packageID` int(10) unsigned NOT NULL DEFAULT '0',
-  `productID` int(10) unsigned NOT NULL DEFAULT '0',
-  `variantID` int(10) unsigned DEFAULT NULL,
-  `qty` int(10) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (`itemID`),
-  KEY `idx_package` (`packageID`)
-) CHARSET=utf8;

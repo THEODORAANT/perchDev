@@ -2,12 +2,6 @@
 
     echo $HTML->title_panel([
         'heading' => $Lang->get('Listing all orders'),
-        'button'  => [
-            'text' => $Lang->get('Add order'),
-            'link' => $API->app_nav().'/order/edit/',
-            'icon' => 'core/plus',
-            'priv' => 'perch_shop.orders.create',
-        ],
     ], $CurrentUser);
 
 

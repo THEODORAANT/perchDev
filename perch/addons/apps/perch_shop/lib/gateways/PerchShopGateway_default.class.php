@@ -29,102 +29,9 @@ class PerchShopGateway_default
 		return $Omnipay->getDefaultParameters();
 	}
 
-public function take_payment($Order, $opts)
-{
-    $payment_opts = [
-        'amount'        => $Order->orderTotal(),
-        'currency'      => $Order->get_currency_code(),
-        'transactionId' => $Order->id(),
-        'clientIp'      => PerchUtil::get_client_ip(),
-        'description'   => 'Order #' . $Order->id(),
-    ];
-
-    // Optionally include card details
-    if ($card = $this->get_payment_card($Order)) {
-        $payment_opts['card'] = $card;
-    }
-
-    $config = PerchShop_Config::get('gateways', $this->slug);
-
-    // Merge all options
-    $opts = $this->format_payment_options($Order, array_merge($opts, $payment_opts));
-
-    // Determine payment method and gateway instance
-    if (isset($opts['confirm'])) {
-        $payment_method = $this->authorize_method;
-        $Omnipay = $this->get_omnipay_intents_instance();
-    } else {
-        $payment_method = $this->payment_method;
-        $Omnipay = $this->get_omnipay_instance();
-    }
-
-    try {
-        $response = $Omnipay->$payment_method($opts)->send();
-    } catch (Exception $e) {
-        if (isset($opts['cancel_url'])) {
-            PerchUtil::redirect($opts['cancel_url']);
-        }
-        return $this->handle_failed_payment($Order, null, $opts);
-    }
-
-    // Handle successful payment
-    if ($response->isSuccessful()) {
-        $paymentIntentReference = method_exists($response, 'getPaymentIntentReference') && $response->getPaymentIntentReference()
-            ? $response->getPaymentIntentReference()
-            : $response->getTransactionReference();
-
-        $Order->set_transaction_reference($paymentIntentReference);
-
-        PerchUtil::debug('Payment successful');
-
-        if ($this->handle_successful_payment($Order, $response, $opts)) {
-            if (isset($opts['success_url'])) {
-                PerchUtil::hold_redirects();
-                PerchUtil::redirect($opts['success_url']);
-            }
-
-            if (isset($opts['return_url'])) {
-                if ($response->getCaptureMethod() === 'manual') {
-                    $this->capture_stripe_payment($paymentIntentReference);
-                }
-
-                $return_url = $opts['return_url'] . "?confirm=false&payment_intent=" . $paymentIntentReference;
-                PerchUtil::redirect($return_url);
-            }
-        }
-
-        return;
-    }
-
-    // Handle redirect response
-    if ($response->isRedirect()) {
-        $transactionRef = isset($opts['confirm'])
-            ? $response->getPaymentIntentReference()
-            : $response->getTransactionReference();
-
-        $Order->set_transaction_reference($transactionRef);
-
-        $this->store_data_before_redirect($Order, $response, $opts);
-
-        PerchUtil::debug('Payment redirect response');
-        PerchUtil::debug($response);
-
-        if (!PerchUtil::get_hold_redirects()) {
-            $response->redirect();
-        }
-
-        return;
-    }
-
-    // Handle failed payment
-    PerchUtil::debug('Payment failed', 'error');
-    PerchUtil::debug($response, 'error');
-
-    return $this->handle_failed_payment($Order, $response, $opts);
-}
 
 
-/*	public function take_payment($Order, $opts)
+	public function take_payment($Order, $opts)
 	{ //echo "take_payment";
 		$payment_opts = [
 				'amount'        => $Order->orderTotal(),
@@ -244,7 +151,7 @@ public function take_payment($Order, $opts)
 		    PerchUtil::debug($response,  'error');
 		    return $this->handle_failed_payment($Order, $response, $opts);
 		}
-	}*/
+	}
 
 	public function capture_stripe_payment($payment_intent){
 		$config = PerchShop_Config::get('gateways', $this->slug);

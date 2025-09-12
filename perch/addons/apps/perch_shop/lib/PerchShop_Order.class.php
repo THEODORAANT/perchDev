@@ -88,7 +88,6 @@ class PerchShop_Order extends PerchShop_Base
 	{
 
 		$Gateway = PerchShop_Gateways::get($this->orderGateway());
-		print_r($Gateway);
 		$result  = $Gateway->take_payment($this, $opts);
 
 		return false;
@@ -104,13 +103,13 @@ class PerchShop_Order extends PerchShop_Base
 	{ //echo "set_status";
         PerchUtil::debug('Setting order status to '.$status);
         if ($this->orderStatus() != $status) {
-            // echo "1";
+             //echo "1";
 
             $result = $this->intelliupdate([ 'status' => $status ]);
-           //  echo "2";
+             // echo "2";
             $Perch = Perch::fetch();
             $Perch->event('shop.order_status_update', $this, $status);
-           // echo "3";print_r($result); echo "***";
+            // echo "3";print_r($result); echo "***";
             return $result;    
         }else{
             PerchUtil::debug('Status already set.', 'error');
@@ -120,22 +119,22 @@ class PerchShop_Order extends PerchShop_Base
 	}
 
 	public function finalize_as_paid($status='paid')
-	{ //echo "finalize_as_paid"; echo $this->orderGateway();
+	{
 		$Gateway = PerchShop_Gateways::get($this->orderGateway());
 		$Gateway->finalize_as_paid($this);
-//echo "1";
+
         $this->assign_invoice_number();
-//echo "3";
+
         $this->set_status($status);
-//echo "44";
+
 		// Get products
 		$Products = new PerchShop_Products($this->api);
 		$products = $Products->get_for_order($this->id());
-//echo "55";
+
         // Get customer
         $Customers = new PerchShop_Customers($this->api);
         $Customer = $Customers->find($this->customerID());
-//echo "66";
+
 		// Update stock levels
 		if (PerchUtil::count($products)) {
 			foreach($products as $Product) {
@@ -148,7 +147,7 @@ class PerchShop_Order extends PerchShop_Base
                 $Product->apply_tags_to_customer($Customer);
 			}
 		}
-//echo "88";
+
         // Get exchange rate, if we can.
         $exchange_rate = $Gateway->get_exchange_rate($this);
         if ($exchange_rate!==null) {
@@ -255,7 +254,7 @@ class PerchShop_Order extends PerchShop_Base
 		return $Gateway->produce_payment_response($args, $gateway_opts);
 	}
 
-    public function assign_invoice_number()
+    private function assign_invoice_number()
     {
         $number = $this->get_next_invoice_number();
         $Settings = $this->api->get('Settings');

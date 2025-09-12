@@ -94,137 +94,17 @@ class PerchShopGateway_stripe extends PerchShopGateway_default
 
 	public function callback_looks_valid($get, $post)
 	{
-            return true;
+return true;
 		/*if (isset($get['payment_intent'])) {
 			return true;
 		}
 		return false;*/
 	}
-	public function take_payment($Order, $opts)
-    {
-    		$Customers = new PerchShop_Customers($this->api);
-            $Customer = $Customers->find($Order->customerID());
 
-        $orderTotal = $Order->orderTotal(); // already in pence
-        $amount = (int) round($orderTotal * 100); // Convert to 12900 (pence) — GOOD
-
-        $currency = $Order->get_currency_code(); // "gbp", "usd", etc.
-        $product_name = ' Order #' . $Order->id();
-            $config = PerchShop_Config::get('gateways', $this->slug);
-    	//	$opts = array_merge($opts, $payment_opts);
-    	$stripe_secret_key = $this->get_api_key($config);
-        $success_url ="https://".$_SERVER['HTTP_HOST'].$opts['return_url']."?session_id={CHECKOUT_SESSION_ID}";
-        $cancel_url ="https://".$_SERVER['HTTP_HOST'].$opts['cancel_url'];
-
-
-        // Create Checkout Session via cURL
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/checkout/sessions');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_USERPWD, $stripe_secret_key . ':');
-
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-            'payment_method_types[]' => 'card',
-            //'payment_method_types[]' => 'klarna',
-             'customer_email' => $Customer->customerEmail(),
-            'line_items[0][price_data][currency]' => $currency,
-            'line_items[0][price_data][product_data][name]' => $product_name,
-            'line_items[0][price_data][unit_amount]' => $amount,
-            'line_items[0][quantity]' => 1,
-
-            'mode' => 'payment',
-            'success_url' => $success_url,
-            'cancel_url' => $cancel_url,
-
-            //'billing_address_collection' => 'required',
-            'customer_creation' => 'always',
-            //'payment_method_options[klarna][preferred_locale]' => 'en-GB',
-        ]));
-
-
-        $response = curl_exec($ch);
-
-        curl_close($ch);
-
-        $data = json_decode($response, true);
-
-
-        if (isset($data['url'])) {
-            // Optional: save session ID for tracking
-            $Order->set_transaction_reference($data['id']);
-
-            // Redirect to Stripe Checkout
-            echo "<script>window.location.href = '" . $data['url'] . "';</script>";
-            exit;
-        } else {
-            //echo "data";
-            //print_r($data);
-            // Log or show error
-            PerchUtil::debug('Stripe session creation failed', 'error');
-            PerchUtil::debug($data, 'error');
-           // return $this->handle_failed_payment($Order, null, $opts);
-        }
-    }
-
-
-	/*public function action_payment_callback($Order, $args, $gateway_opts)
+	public function action_payment_callback($Order, $args, $gateway_opts)
     {
     	$result = $this->confirm_payment($Order, $args, $gateway_opts);
 return $result;
 
-    }*/
-      public function action_payment_callback($Order, $args, $opts)
-      	{ //echo "action_payment_callback";
-      	//print_r($Order);
-      	if (isset($_GET['session_id'])) {
-              $session_id = $_GET['session_id'];
-              $config = PerchShop_Config::get('gateways', $this->slug);
-             	$stripe_secret_key = $this->get_api_key($config);
-
-              // Make cURL request to retrieve session
-              $ch = curl_init();
-              curl_setopt($ch, CURLOPT_URL, "https://api.stripe.com/v1/checkout/sessions/$session_id");
-              curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-              curl_setopt($ch, CURLOPT_USERPWD, $stripe_secret_key . ':');
-
-              $response = curl_exec($ch);
-             //  echo "action_response";
-              //	print_r($response);
-              curl_close($ch);
-
-              $session = json_decode($response, true);
-              $opts['success_url'] ="https://".$_SERVER['HTTP_HOST'].$opts['success_url']."?session_id={CHECKOUT_SESSION_ID}";
-              $opts['cancel_url'] ="https://".$_SERVER['HTTP_HOST'].$opts['cancel_url'];
-              // Check session payment status
-              if ($session && isset($session['payment_status']) && $session['payment_status'] === 'paid') {
-                  // Success: mark order as paid in your system
-
-                  $transaction_reference = $session['id'] ?? $session['payment_intent'];
-             ///echo "transaction_reference";
-             //	print_r($transaction_reference);
-                  // Example logic for updating Perch order:
-                 // $Order = $Order->find_by_transaction_reference($transaction_reference);
-                   //$Order =$Orders->get_one_by('orderGatewayRef',$transaction_reference);
-                  if ($Order->orderGatewayRef()!=null) {
-                   //   $Order->set_status('paid');
-                      // Redirect to thank-you page or show confirmation
-                      //echo "Payment successful! Order marked as paid.";
-                    $Order->update(['orderGatewayRef'=>$session['payment_intent']]);
-                       $success= $this->handle_successful_payment($Order, $response, $opts);
-                                 return true;
-
-                  } else {
-                  $this->handle_failed_payment($Order, $response, $opts);
-                      return false;//"Payment successful, but no matching order found.";
-                  }
-              } else {
-                  echo "Payment incomplete or session invalid.";
-              }
-          } else {
-              echo "No session_id provided.";
-          }
-      	}
-
+    }
 }

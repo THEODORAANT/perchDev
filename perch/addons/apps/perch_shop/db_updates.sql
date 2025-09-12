@@ -23,4 +23,3 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__shop_sales` (
 ) CHARSET=utf8;
 
 ALTER TABLE `__PREFIX__shop_countries` ADD `countryDynamicFields` TEXT  NULL  AFTER `countryActive`;
-
