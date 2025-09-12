@@ -4,6 +4,14 @@
     {
         public $attributes      = [];
         public $data_attributes = [];
+        /**
+         * Holds group information when tags are grouped within templates.
+         *
+         * PHP 8.2 deprecates dynamic properties, so we explicitly define this
+         * property to avoid "Creation of dynamic property" warnings when the
+         * template parser sets $Tag->group during group annotation.
+         */
+        public $group = false;
         private $tag;
         
         public function __construct($tag, $boolean_attributes = true)
