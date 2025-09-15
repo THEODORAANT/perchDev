@@ -88,7 +88,7 @@ class PerchShop_Order extends PerchShop_Base
 	{
 
 		$Gateway = PerchShop_Gateways::get($this->orderGateway());
-		print_r($Gateway);
+
 		$result  = $Gateway->take_payment($this, $opts);
 
 		return false;
