@@ -14,12 +14,7 @@ if (!is_array($input)) {
 }
 $prompt = isset($input['prompt']) ? $input['prompt'] : '';
 
-    if (!defined('OPENAI_API_KEY') || !OPENAI_API_KEY) {
-        $env_key = getenv('OPENAI_API_KEY');
-        if ($env_key) {
-            define('OPENAI_API_KEY', $env_key);
-        }
-    }
+    $api_key = defined('OPENAI_API_KEY') ? OPENAI_API_KEY : getenv('OPENAI_API_KEY');
     if (!class_exists('PerchUtil')) {
         include_once PERCH_CORE . '/lib/PerchUtil.class.php';
     }
@@ -30,7 +25,7 @@ $prompt = isset($input['prompt']) ? $input['prompt'] : '';
     $input  = json_decode(file_get_contents('php://input'), true);
     $prompt = isset($input['prompt']) ? $input['prompt'] : '';
 
-    $ai      = new PerchContent_AI();
+    $ai      = new PerchContent_AI($api_key);
     $content = $ai->generate($prompt);
 
     echo json_encode(['content' => $content]);
