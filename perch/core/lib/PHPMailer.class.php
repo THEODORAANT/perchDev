@@ -2695,30 +2695,17 @@ class PHPMailer
             if (!is_readable($path)) {
                 throw new phpmailerException($this->lang('file_open') . $path, self::STOP_CONTINUE);
             }
-            if(function_exists( 'get_magic_quotes_runtime' )){
-            $magic_quotes = get_magic_quotes_runtime();
-            }else{
-             $magic_quotes = false;
-            }
-
-            if ($magic_quotes) {
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+                        $magic_quotes = false;
+            if (function_exists('get_magic_quotes_runtime') && function_exists('set_magic_quotes_runtime')) {
+                $magic_quotes = get_magic_quotes_runtime();
+                if ($magic_quotes) {
                     set_magic_quotes_runtime(false);
-                } else {
-                    //Doesn't exist in PHP 5.4, but we don't need to check because
-                    //get_magic_quotes_runtime always returns false in 5.4+
-                    //so it will never get here
-                    ini_set('magic_quotes_runtime', false);
                 }
             }
             $file_buffer = file_get_contents($path);
             $file_buffer = $this->encodeString($file_buffer, $encoding);
-            if ($magic_quotes) {
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                    set_magic_quotes_runtime($magic_quotes);
-                } else {
-                    ini_set('magic_quotes_runtime', $magic_quotes);
-                }
+            if ($magic_quotes && function_exists('set_magic_quotes_runtime')) {
+                set_magic_quotes_runtime($magic_quotes);
             }
             return $file_buffer;
         } catch (Exception $exc) {
