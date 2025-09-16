@@ -371,45 +371,33 @@ class PerchDB_MySQL
 
 
 	public function pdb($value)
-	{
+        {
 
+                // Stripslashes
+                $value = PerchUtil::safe_stripslashes($value);
 
-         if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-               set_magic_quotes_runtime(false);
-         } else {
-                        //Doesn't exist in PHP 5.4, but we don't need to check because
-                        //get_magic_quotes_runtime always returns false in 5.4+
-                        //so it will never get here
-           ini_set('magic_quotes_runtime', false);
-      }
+                $link = $this->get_link();
+            if (!$link) return false;
 
+                // Quote
+                switch(gettype($value)) {
+                        case 'integer':
+                        case 'double':
+                                $escape = $value;
+                                break;
+                        case 'string':
+                                $escape = $link->quote($value);
+                                break;
+                        case 'NULL':
+                                $escape = 'NULL';
+                                break;
+                        default:
+                                $escape = $link->quote($value);
+                }
 
-		// Stripslashes
-		//if (function_exists( 'get_magic_quotes_runtime' ) && get_magic_quotes_runtime()) {
-			$value = PerchUtil::safe_stripslashes($value);
-		//}
+                return $escape;
+        }
 
-		$link = $this->get_link();
-	    if (!$link) return false;
-
-		// Quote
-		switch(gettype($value)) {
-			case 'integer':
-			case 'double':
-				$escape = $value;
-				break;
-			case 'string':
-				$escape = $link->quote($value);
-				break;
-			case 'NULL':
-				$escape = 'NULL';
-				break;
-			default:
-				$escape = $link->quote($value);
-		}
-
-		return $escape;
-	}
 
 	public function get_table_meta($table)
 	{

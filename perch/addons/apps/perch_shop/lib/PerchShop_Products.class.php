@@ -215,17 +215,15 @@ class PerchShop_Products extends PerchShop_Factory
 		return [];
 	}
 
-	private function array_flatten($arr) 
-	{
-	    $arr = array_values($arr);
-	    while (list($k,$v)=each($arr)) {
-	        if (is_array($v)) {
-	            array_splice($arr,$k,1,$v);
-	            next($arr);
-	        }
-	    }
-	    return $arr;
-	}
+        private function array_flatten($arr)
+        {
+            $result = [];
+            array_walk_recursive($arr, function ($value) use (&$result) {
+                $result[] = $value;
+            });
+
+            return $result;
+        }
 
 
 

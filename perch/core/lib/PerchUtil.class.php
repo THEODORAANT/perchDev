@@ -296,39 +296,41 @@
 		}
 
 		public static function is_valid_email($email)
-		{
-			if (function_exists('filter_var')) {
-				return filter_var($email, FILTER_VALIDATE_EMAIL);
-			} else {
+                {
+                        if (function_exists('filter_var')) {
+                                return filter_var($email, FILTER_VALIDATE_EMAIL);
+                        }
 
-				if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
-					// Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
-					return false;
-				}
+                        $email_pattern = "/^[^@]{1,64}@[^@]{1,255}$/";
+                        if (preg_match($email_pattern, $email) !== 1) {
+                                // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
+                                return false;
+                        }
 
-				// Split it into sections to make life easier
-				$email_array = explode("@", $email);
-				$local_array = explode(".", $email_array[0]);
-				for ($i = 0; $i < sizeof($local_array); $i++) {
-					if (!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
-						return false;
-					}
-				}
-				if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
-					$domain_array = explode(".", $email_array[1]);
-					if (sizeof($domain_array) < 2) {
-						return false; // Not enough parts to domain
-					}
-					for ($i = 0; $i < sizeof($domain_array); $i++) {
-						if (!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
-							return false;
-						}
-					}
-				}
+                        // Split it into sections to make life easier
+                        $email_array = explode("@", $email);
+                        $local_array = explode(".", $email_array[0]);
+                        $local_pattern = "/^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"([^\\\"]){0,62}\"))$/";
+                        foreach ($local_array as $local_part) {
+                                if (preg_match($local_pattern, $local_part) !== 1) {
+                                        return false;
+                                }
+                        }
+                        if (preg_match("/^\\[?[0-9\.]+\\]?$/", $email_array[1]) !== 1) { // Check if domain is IP. If not, it should be valid domain name
+                                $domain_array = explode(".", $email_array[1]);
+                                if (sizeof($domain_array) < 2) {
+                                        return false; // Not enough parts to domain
+                                }
+                                $domain_pattern = "/^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$/";
+                                foreach ($domain_array as $domain_part) {
+                                        if (preg_match($domain_pattern, $domain_part) !== 1) {
+                                                return false;
+                                        }
+                                }
+                        }
 
-				return true;
-			}
-		}
+                        return true;
+                }
 
 		public static function excerpt($str, $words, $strip_tags = true, $balance_tags = false, $append = false)
 		{
@@ -1384,38 +1386,18 @@
 		}
 
 		public static function safe_stripslashes($str)
-		{
-			$strip = false;
-			//  if (!defined('PERCH_STRIPSLASHES'))         define('PERCH_STRIPSLASHES', false);
-			if (PERCH_STRIPSLASHES) {
-				$strip = true;
-			}
-			/*if (function_exists( 'get_magic_quotes_gpc' ) && get_magic_quotes_gpc()) {
-				$strip = true;
-			}*/
+                {
+                        $strip = false;
+                        if (PERCH_STRIPSLASHES) {
+                                $strip = true;
+                        }
 
+                        if ($strip) {
+                                return stripslashes($str);
+                        }
 
-
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                    set_magic_quotes_runtime(false);
-                } else {
-                   //Doesn't exist in PHP 5.4, but we don't need to check because
-                   //get_magic_quotes_runtime always returns false in 5.4+
-                   //so it will never get here
-                   ini_set('magic_quotes_runtime', false);
+                        return $str;
                 }
-
-
-
-			/*if (function_exists( 'get_magic_quotes_runtime' )) {
-				$strip = true;
-			}*/
-			if ($strip) {
-				return stripslashes($str);
-			}
-
-			return $str;
-		}
 
 		public static function flush_output()
 		{
