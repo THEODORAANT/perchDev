@@ -35,3 +35,10 @@ Clicking “Generate with AI” opens a prompt dialog where you describe the con
 model to produce. After the request is submitted, Perch retrieves up to 150 tokens of generated text
 and inserts it into the relevant editor field. Always review and edit the suggestion before
 publishing to ensure it matches your tone, house style, and legal obligations.
+=======
+# perch
+Replaced the legacy ereg fallback with PCRE-based validation and simplified safe_stripslashes() in both PerchUtil libraries to drop deprecated magic quotes logic.
+
+Removed runtime magic quotes handling from the MySQL helper and PHPMailer in both code paths so no deprecated functions are invoked during database quoting or file encoding.
+
+Modernized Perch Shop helpers by using array_walk_recursive() for flattening and a closure in place of create_function() for delimiter conversion callbacks.
