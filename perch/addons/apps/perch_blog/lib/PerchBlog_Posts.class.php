@@ -220,7 +220,103 @@ class PerchBlog_Posts extends PerchAPI_Factory
             return $this->find($postID, true);
 		}
         return false;
-	}
+        }
+
+    public function create_translation(PerchBlog_Post $BasePost, $language, PerchBlog_PostTranslations $Translations, $base_post_id)
+    {
+        $language = trim($language);
+        if ($language === '') {
+            return false;
+        }
+
+        $base_details = $BasePost->get_details();
+        if (!is_array($base_details)) {
+            return false;
+        }
+
+        $data = $base_details;
+        unset($data['postID']);
+
+        $data['postSlug'] = $this->build_translation_slug($BasePost->postSlug(), $language);
+        $data['postStatus'] = 'Draft';
+        $data['postIsPublished'] = 0;
+
+        if (isset($data['postCommentCount'])) {
+            $data['postCommentCount'] = 0;
+        }
+
+        if (isset($data['postImportID'])) {
+            $data['postImportID'] = null;
+        }
+
+        if (isset($data['postLegacyURL'])) {
+            $data['postLegacyURL'] = null;
+        }
+
+        $dynamic_fields = [];
+        if (isset($data['postDynamicFields']) && $data['postDynamicFields'] != '') {
+            $dynamic_fields = PerchUtil::json_safe_decode($data['postDynamicFields'], true);
+            if (!is_array($dynamic_fields)) {
+                $dynamic_fields = [];
+            }
+        }
+
+        $dynamic_fields['_translate_language'] = $language;
+        $dynamic_fields['_translate_source_post'] = $BasePost->id();
+        $data['postDynamicFields'] = PerchUtil::json_safe_encode($dynamic_fields);
+
+        $NewPost = $this->create($data);
+        if (!$NewPost) {
+            return false;
+        }
+
+        $Template = $this->api->get('Template');
+        $Template->set('blog/'.$BasePost->postTemplate(), 'blog');
+        $NewPost->Template = $Template;
+        $NewPost->index($Template);
+
+        $Translations->register_translation($base_post_id, $NewPost->id(), $language);
+
+        return $NewPost;
+    }
+
+    private function build_translation_slug($base_slug, $language)
+    {
+        $segment = $this->clean_language_for_slug($language);
+        $slug = $base_slug.'-'.$segment;
+        $unique = $slug;
+        $i = 2;
+
+        while ($this->slug_exists($unique)) {
+            $unique = $slug.'-'.$i;
+            $i++;
+        }
+
+        return $unique;
+    }
+
+    private function clean_language_for_slug($language)
+    {
+        $segment = strtolower($language);
+        $segment = preg_replace('/[^a-z0-9\-]+/', '-', $segment);
+        $segment = trim($segment, '-');
+
+        if ($segment === '') {
+            $segment = strtolower(preg_replace('/[^a-z0-9]+/', '', $language));
+        }
+
+        if ($segment === '') {
+            $segment = 'translation';
+        }
+
+        return $segment;
+    }
+
+    private function slug_exists($slug)
+    {
+        $sql = 'SELECT COUNT(*) FROM '.$this->table.' WHERE postSlug='.$this->db->pdb($slug);
+        return ((int)$this->db->get_value($sql)) > 0;
+    }
 
 
 

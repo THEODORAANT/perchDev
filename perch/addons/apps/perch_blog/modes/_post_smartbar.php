@@ -33,6 +33,14 @@
             ]);
 
         $Smartbar->add_item([
+                'active' => ($smartbar_selection=='translate'),
+                'link'   => $API->app_nav('perch_blog').'/translate/?id='.$Post->id(),
+                'title'  => 'Translate Post',
+                'icon'   => 'core/lang',
+                'priv'   => 'perch_blog.post.create',
+            ]);
+
+        $Smartbar->add_item([
                 'active'        => false,
                 'link'          => ($draft ? $Post->previewURL() : $Post->postURL()),
                 'title'         => ($draft ? 'Preview Draft' : 'View Post'),

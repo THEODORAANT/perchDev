@@ -5,12 +5,13 @@
 
 	PerchUI::set_subnav([
 			[
-				'page' => [
-						'perch_blog',
-						'perch_blog/delete',
-						'perch_blog/edit',
-						'perch_blog/meta'
-				], 
+                                'page' => [
+                                                'perch_blog',
+                                                'perch_blog/delete',
+                                                'perch_blog/edit',
+                                                'perch_blog/meta',
+                                                'perch_blog/translate'
+                                ],
 				'label' => 'Posts'
 			],
 			[

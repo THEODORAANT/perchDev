@@ -278,5 +278,18 @@
     "Receive webmentions": "Receive webmentions",
     "This comment is a webmention (%s)": "This comment is a webmention (%s)",
     "Comment on \u2018%s\u2019": "Comment on \u2018%s\u2019",
-    "Save & Add another": "Save & Moderate next"
+    "Save & Add another": "Save & Moderate next",
+    "Translate Post": "Translate Post",
+    "Translate %s Post": "Translate \u2018%s\u2019",
+    "Translate post to": "Translate post to",
+    "Please select a valid language.": "Please select a valid language.",
+    "Create translation": "Create translation",
+    "Existing translations": "Existing translations",
+    "Base content": "Base content",
+    "No additional languages are available for this post.": "No additional languages are available for this post.",
+    "Language": "Language",
+    "Languages": "Languages",
+    "Actions": "Actions",
+    "Edit translation": "Edit translation",
+    "Sorry, that translation could not be created.": "Sorry, that translation could not be created."
 }
