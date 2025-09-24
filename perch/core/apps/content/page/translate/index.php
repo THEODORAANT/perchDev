@@ -6,7 +6,7 @@
     include(PERCH_CORE . '/inc/auth.php');
     
     
-    $Perch->page_title = PerchLang::get('Edit Page URL');
+    $Perch->page_title = PerchLang::get('Translate Page');
 
     $app_path = PERCH_CORE.'/apps/content';
     
