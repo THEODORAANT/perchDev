@@ -35,6 +35,41 @@ Clicking “Generate with AI” opens a prompt dialog where you describe the con
 model to produce. After the request is submitted, Perch retrieves up to 150 tokens of generated text
 and inserts it into the relevant editor field. Always review and edit the suggestion before
 publishing to ensure it matches your tone, house style, and legal obligations.
+
+## Translating Pages and Blog Posts
+
+Perch can duplicate existing content into language-specific drafts so editors can translate pages and
+blog posts without overwriting the original.
+
+### Configure Languages
+
+1. Visit **Settings → Languages** in the control panel.
+2. Add the language codes you need (for example `fr` for French or `es` for Spanish) and save the
+   configuration.
+3. These languages become available throughout the translation tools described below.
+
+### Translate a Page
+
+1. Open the page you want to translate from **Content → Pages** and choose **Translate Page** from the
+   Smartbar.
+2. Select a language from the drop-down list. Existing translations are automatically filtered out so
+   each language can only be created once.
+3. Submit the form to generate new content regions labelled with the language suffix. The regions are
+   created in draft mode so you can edit the translated text before publishing.
+
+### Translate a Blog Post
+
+1. While editing a blog post, choose **Translate Post** from the Smartbar.
+2. Pick a language and click **Create translation**. Perch duplicates the post, marks it as a draft,
+   and appends a language-specific slug so it will not clash with the original.
+3. Use the links in the translation table to jump straight into editing or previewing the new draft.
+
+### Track Translation Progress
+
+The translation screen lists every version of the page or post, including the base content, the
+language assigned to each translation, and quick actions to edit or preview them. Once a translation
+is published it behaves like any other page or post, but the translation dashboard prevents accidental
+duplicates and keeps the workflow organised.
 =======
 # perch
 Replaced the legacy ereg fallback with PCRE-based validation and simplified safe_stripslashes() in both PerchUtil libraries to drop deprecated magic quotes logic.
