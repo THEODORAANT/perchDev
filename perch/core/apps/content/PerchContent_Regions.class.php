@@ -71,27 +71,31 @@ class PerchContent_Regions extends PerchFactory
         $sort_dir = null;
 
 
-        $sql = 'SELECT';
+        $lang = trim($lang);
+        $suffix = ' - '.$lang;
 
-        $sql .= ' * FROM '.$this->table.' WHERE TRIM(regionKey) NOT REGEXP " - .{2}$" and pageID='.$this->db->pdb((int)$pageID);
+        $sql  = 'SELECT base.* FROM '.$this->table.' base';
+        $sql .= ' LEFT JOIN '.$this->table.' translated ON translated.pageID=base.pageID';
+        $sql .= ' AND translated.regionKey=CONCAT(base.regionKey, '.$this->db->pdb($suffix).')';
+        $sql .= ' WHERE base.pageID='.$this->db->pdb((int)$pageID);
+        $sql .= ' AND (base.language='.$this->db->pdb('*').' OR base.language='.$this->db->pdb('').' OR base.language IS NULL)';
 
         if (!$include_shared) {
-            $sql .= ' AND regionPage!='.$this->db->pdb('*');
+            $sql .= ' AND base.regionPage!='.$this->db->pdb('*');
         }
 
+        if ($new_only) {
+            $sql .= ' AND base.regionNew=1';
+        }
 
+        if ($template) {
+            $sql .= ' AND base.regionTemplate='.$this->db->pdb($template).' ';
+        }
 
-		if ($template) {
-			$sql .= ' AND regionTemplate='.$this->db->pdb($template).' ';
-		}
-
-
-
-
+        $sql .= ' AND translated.regionID IS NULL';
+        $sql .= ' ORDER BY base.regionOrder ASC';
 
         $rows = $this->db->get_rows($sql);
-
-
 
         return $this->return_instances($rows);
     }
@@ -104,7 +108,7 @@ class PerchContent_Regions extends PerchFactory
      * @return void
      * @author Drew McLellan
      */
-    public function get_for_page($pageID, $include_shared=true, $new_only=false, $template=false, PerchAPI_Paging $Paging = null)
+    public function get_for_page($pageID, $include_shared=true, $new_only=false, $template=false, PerchAPI_Paging $Paging = null, $language=false)
     {
         if ($this->_regions_preloaded) {
             if (isset($this->_region_cache[$pageID])) {
@@ -123,23 +127,31 @@ class PerchContent_Regions extends PerchFactory
         }
         
         $sql .= ' * FROM '.$this->table.' WHERE pageID='.$this->db->pdb((int)$pageID);
-        
+
         if (!$include_shared) {
             $sql .= ' AND regionPage!='.$this->db->pdb('*');
         }
 
-		if ($new_only) {
-			$sql .= ' AND regionNew=1 ';
-		}
-        
-		if ($template) {
-			$sql .= ' AND regionTemplate='.$this->db->pdb($template).' ';
-		}
+                if ($new_only) {
+                        $sql .= ' AND regionNew=1 ';
+                }
+
+                if ($template) {
+                        $sql .= ' AND regionTemplate='.$this->db->pdb($template).' ';
+                }
+
+        if ($language !== false && $language !== '') {
+            $language = trim($language);
+            $language_condition = 'language='.$this->db->pdb($language);
+            $language_condition .= ' OR ((language='.$this->db->pdb('*').' OR language='.$this->db->pdb('').' OR language IS NULL)';
+            $language_condition .= ' AND regionKey LIKE '.$this->db->pdb('% - '.$language).')';
+            $sql .= ' AND ('.$language_condition.')';
+        }
 
         if ($Paging && $Paging->enabled() && $sort_val) {
             $sql .= ' ORDER BY '.$sort_val.' '.$sort_dir;
         } else {
-            $sql .= ' ORDER BY regionOrder ASC';    
+            $sql .= ' ORDER BY regionOrder ASC';
         }
         
         if ($Paging && $Paging->enabled()) {

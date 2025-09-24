@@ -42,7 +42,7 @@
                 'title'  => 'Translate Page',
                 'link'   => '/core/apps/content/page/translate/?id='.$Page->id(),
                 'priv'   => 'content.pages.translate',
-                'icon'   => 'core/o-signs',
+                'icon'   => 'core/lang',
             ]);
 
 			$Smartbar->add_item([
