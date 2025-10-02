@@ -40,13 +40,59 @@
 		<h1 class="h1-view"><perch:shop id="title" type="text" /></h1>
 		<img src="images/line.png" class="text-left mb-3" width="50" height="10">
 
-		<h2 class="font-weight-bold mt-4 mb-4"><perch:shop id="price" type="shop_currency_value" label="Price" divider-before="Pricing" size="s" min="0" step="any" /></h2>
+                <h2 class="font-weight-bold mt-4 mb-4"><perch:shop id="price" type="shop_currency_value" label="Price" divider-before="Pricing" size="s" min="0" step="any" /></h2>
 
+                <perch:if not-exists="has_variants">
+                        <p class="product-stock" data-stock-level="<perch:shop id="stock_level" escape="true" />">
+                                <perch:if exists="stock_level">
+                                        <perch:if id="stock_level" match="eq" value="0">
+                                                <span>Out of stock</span>
+                                        <perch:else />
+                                                <span>
+                                                        <perch:if id="stock_level" match="eq" value="INF">In stock<perch:else /><perch:shop id="stock_level" /> in stock</perch:if>
+                                                </span>
+                                        </perch:if>
+                                <perch:else />
+                                        <span>In stock</span>
+                                </perch:if>
+                        </p>
+                </perch:if>
 
-		<perch:form id="add_to_cart" app="perch_shop" action="/shop/cart.php">
-			<perch:input id="product" type="hidden" value="<perch:shop id="productID" type="hidden">">
-			<perch:input type="submit" value="Add to cart">
-		</perch:form>
+                <perch:form id="add_to_cart" app="perch_shop" action="/shop/cart.php">
+                        <perch:if exists="has_variants">
+                                <label class="product-variants__label" for="product">Choose an option</label>
+                                <select class="form-control mb-3" id="product" name="product" required>
+                                        <option value="" disabled selected>Select an option</option>
+                                        <perch:variants>
+                                                <perch:if exists="stock_level">
+                                                        <perch:if id="stock_level" match="eq" value="0">
+                                                        <perch:else />
+                                                                <option value="<perch:shop id="productID" escape="true" />" data-stock-level="<perch:shop id="stock_level" escape="true" />">
+                                                                        <perch:shop id="productVariantDesc" /> –
+                                                                        <perch:if id="stock_level" match="eq" value="INF">In stock<perch:else /><perch:shop id="stock_level" /> in stock</perch:if>
+                                                                </option>
+                                                        </perch:if>
+                                                <perch:else />
+                                                        <option value="<perch:shop id="productID" escape="true" />" data-stock-level="INF">
+                                                                <perch:shop id="productVariantDesc" /> – In stock
+                                                        </option>
+                                                </perch:if>
+                                        </perch:variants>
+                                </select>
+                                <perch:input class="btn btn-cart text-uppercase" type="submit" value="Add to cart" />
+                        <perch:else />
+                                <perch:input id="product" type="hidden" env-autofill="false" value='<perch:shop id="productID" type="hidden" env-autofill="false" />' />
+                                <perch:if exists="stock_level">
+                                        <perch:if id="stock_level" match="eq" value="0">
+                                                <button class="btn btn-secondary" type="button" disabled>Out of stock</button>
+                                        <perch:else />
+                                                <perch:input class="btn btn-cart text-uppercase" type="submit" value="Add to cart" />
+                                        </perch:if>
+                                <perch:else />
+                                        <perch:input class="btn btn-cart text-uppercase" type="submit" value="Add to cart" />
+                                </perch:if>
+                        </perch:if>
+                </perch:form>
 		<h4 class="mt-5">SKU <perch:shop id="sku" type="text" label="SKU" required="true" order="1"/></h4>
 
 	<h1 class="mt-5 h1-view">Description</h1>
