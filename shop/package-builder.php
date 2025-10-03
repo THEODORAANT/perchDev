@@ -190,7 +190,8 @@ if (isset($_GET['months'])) {
 
             perch_shop_products([
                 'category' => 'products/weight-loss',
-                'template' => 'products/package-builder/variant-options'
+                'template' => 'products/package-builder/variant-options',
+                'variants' => true,
             ]);
         } else {
             echo '<p class="muted">perch_shop_products() not available in this environment.</p>';

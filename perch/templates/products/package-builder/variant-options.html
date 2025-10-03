@@ -1,0 +1,76 @@
+<perch:before>
+<div class="package-builder-products">
+</perch:before>
+
+<form class="package-builder-products__item" method="post">
+    <input type="hidden" name="package_id" value="<perch:var id='package_id' escape='true' />" />
+    <input type="hidden" name="months" value="<perch:var id='months' escape='true' />" />
+    <input type="hidden" name="billing_type" value="<perch:var id='billing_type' escape='true' />" />
+    <input type="hidden" name="selections[<perch:var id='month' />][qty]" value="1" />
+
+    <header class="package-builder-products__header">
+        <h4 class="package-builder-products__title"><perch:shop id="title" type="text" /></h4>
+        <perch:if exists="description">
+            <div class="package-builder-products__description"><perch:shop id="description" type="textarea" markdown="true" /></div>
+        </perch:if>
+    </header>
+
+    <perch:if exists="has_variants">
+        <fieldset class="package-builder-products__variants">
+            <legend class="package-builder-products__variants-heading">Choose a dose</legend>
+            <ul class="package-builder-products__variant-list">
+                <perch:variants>
+                    <perch:if exists="stock_level">
+                        <perch:if id="stock_level" match="eq" value="0">
+                            <li class="package-builder-products__variant package-builder-products__variant--unavailable" data-stock-level="0">
+                                <span class="package-builder-products__variant-name"><perch:shop id="productVariantDesc" /></span>
+                                <span class="package-builder-products__variant-stock">Out of stock</span>
+                            </li>
+                        <perch:else />
+                            <li class="package-builder-products__variant" data-stock-level="<perch:shop id='stock_level' escape='true' />">
+                                <label>
+                                    <input type="radio" name="selections[<perch:var id='month' />][dose]" value="<perch:shop id='productID' />" />
+                                    <span class="package-builder-products__variant-name"><perch:shop id="productVariantDesc" /></span>
+                                    <span class="package-builder-products__variant-stock">
+                                        <perch:if id="stock_level" match="eq" value="INF">In stock<perch:else /><perch:shop id="stock_level" /> in stock</perch:if>
+                                    </span>
+                                </label>
+                            </li>
+                        </perch:if>
+                    <perch:else />
+                        <li class="package-builder-products__variant" data-stock-level="INF">
+                            <label>
+                                <input type="radio" name="selections[<perch:var id='month' />][dose]" value="<perch:shop id='productID' />" />
+                                <span class="package-builder-products__variant-name"><perch:shop id="productVariantDesc" /></span>
+                                <span class="package-builder-products__variant-stock">In stock</span>
+                            </label>
+                        </li>
+                    </perch:if>
+                </perch:variants>
+            </ul>
+        </fieldset>
+    <perch:else />
+        <input type="hidden" name="selections[<perch:var id='month' />][dose]" value="<perch:shop id='productID' />" />
+        <p class="package-builder-products__stock" data-stock-level="<perch:shop id='stock_level' escape='true' />">
+            <perch:if exists="stock_level">
+                <perch:if id="stock_level" match="eq" value="0">
+                    <span>Out of stock</span>
+                <perch:else />
+                    <span>
+                        <perch:if id="stock_level" match="eq" value="INF">In stock<perch:else /><perch:shop id="stock_level" /> in stock</perch:if>
+                    </span>
+                </perch:if>
+            <perch:else />
+                <span>In stock</span>
+            </perch:if>
+        </p>
+    </perch:if>
+
+    <footer class="package-builder-products__actions">
+        <button type="submit" name="selections[<perch:var id='month' />][product_id]" value="<perch:shop id='productID' />">Add to package</button>
+    </footer>
+</form>
+
+<perch:after>
+</div>
+</perch:after>
