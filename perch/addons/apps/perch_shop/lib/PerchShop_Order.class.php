@@ -329,10 +329,14 @@ class PerchShop_Order extends PerchShop_Base
         $Addresses = new PerchShop_Addresses($this->api);
 
         $ShippingAddr = $Addresses->find((int)$this->orderShippingAddress());
-        $Email->set_bulk($ShippingAddr->format_for_template('shipping'));
+        if ($ShippingAddr) {
+                $Email->set_bulk($ShippingAddr->format_for_template('shipping'));
+        }
 
-		$BillingAddr = $Addresses->find((int)$this->orderBillingAddress());
-        $Email->set_bulk($BillingAddr->format_for_template('billing'));
+        $BillingAddr = $Addresses->find((int)$this->orderBillingAddress());
+        if ($BillingAddr) {
+                $Email->set_bulk($BillingAddr->format_for_template('billing'));
+        }
 
         $OrderItems = new PerchShop_OrderItems($this->api);
         $items = $OrderItems->get_by('orderID', $this->id());
