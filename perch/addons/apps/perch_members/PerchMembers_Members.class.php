@@ -196,11 +196,16 @@ class PerchMembers_Members extends PerchAPI_Factory
         	$Hasher = PerchUtil::get_password_hasher();
         	$member['memberPassword'] = $Hasher->HashPassword($clear_pwd);
 
-	    	$Member = $this->create($member);
+                $Member = $this->create($member);
 
-	    	$member = array(
-	    		'memberAuthID'=>$Member->memberID()
-	    	);
+                if (!is_object($Member)) {
+                        // Bail out if the member couldn't be created – most likely validation failed.
+                        return false;
+                }
+
+                $member = array(
+                        'memberAuthID'=>$Member->memberID()
+                );
 
 	    	if (isset($form_settings['moderate']) && $form_settings['moderate']=='1') {
 	    		if (isset($form_settings['moderator_email'])) {
