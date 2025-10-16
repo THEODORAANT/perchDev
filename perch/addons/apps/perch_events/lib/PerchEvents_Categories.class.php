@@ -67,11 +67,60 @@ class PerchEvents_Categories extends PerchAPI_Factory
 		$content = array();
 
         if (PerchUtil::count($cats)) {
-            foreach($cats as $Cat) $content[] = $Cat->to_array();    
+            foreach($cats as $Cat) $content[] = $Cat->to_array();
         }
-		
-		
-		if (isset($opts['filter']) && (isset($opts['value']) || is_array($opts['filter']))) {
+
+        if ($opts['exclude']) {
+            $exclude = $opts['exclude'];
+            if (!is_array($exclude)) $exclude = array($exclude);
+
+            $exclude_titles = array();
+            $exclude_slugs  = array();
+            $exclude_ids    = array();
+
+            $to_lower = function($value) {
+                $value = (string)$value;
+                if (function_exists('mb_strtolower')) {
+                    return mb_strtolower($value);
+                }
+                return strtolower($value);
+            };
+
+            foreach($exclude as $item) {
+                if (is_array($item)) continue;
+
+                if (is_numeric($item)) {
+                    $exclude_ids[] = (int)$item;
+                }
+
+                $item = trim((string)$item);
+
+                if ($item === '') continue;
+
+                $exclude_titles[] = $to_lower($item);
+                $exclude_slugs[]  = $to_lower(PerchUtil::urlify($item));
+            }
+
+            if (PerchUtil::count($content)) {
+                $filtered = array();
+                foreach($content as $cat_item) {
+                    $slug  = isset($cat_item['categorySlug']) ? $to_lower($cat_item['categorySlug']) : null;
+                    $title = isset($cat_item['categoryTitle']) ? $to_lower($cat_item['categoryTitle']) : null;
+                    $id    = isset($cat_item['categoryID']) ? (int)$cat_item['categoryID'] : null;
+
+                    if ($slug && in_array($slug, $exclude_slugs)) continue;
+                    if ($title && in_array($title, $exclude_titles)) continue;
+                    if ($id && in_array($id, $exclude_ids)) continue;
+
+                    $filtered[] = $cat_item;
+                }
+
+                $content = $filtered;
+            }
+        }
+
+
+        if (isset($opts['filter']) && (isset($opts['value']) || is_array($opts['filter']))) {
             if (PerchUtil::count($content)) {
                 $out = array();
 

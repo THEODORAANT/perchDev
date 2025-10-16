@@ -300,6 +300,7 @@
             'include-empty'        => false,
             'filter'               => false,
             'past-events'          => false,
+            'exclude'              => false,
         );
 
         if (is_array($opts)) {
