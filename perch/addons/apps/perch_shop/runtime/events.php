@@ -27,4 +27,3 @@ function perch_shop_register_runtime_events()
         $ShopRuntime->reset_after_logout();
     });
 }
-
