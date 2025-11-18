@@ -75,23 +75,37 @@ class PerchEvents_Event extends PerchAPI_Base
         
         $Categories = new PerchEvents_Categories();
         $cats   = $Categories->get_for_event($this->id());
-        
+
         $out['category_slugs'] = '';
         $out['category_names'] = '';
-        
+        $out['category_colors'] = '';
+
         if (PerchUtil::count($cats)) {
             $slugs = array();
             $names = array();
+            $colors = array();
             foreach($cats as $Category) {
                 $slugs[] = $Category->categorySlug();
                 $names[] = $Category->categoryTitle();
-                
+
+                $category_data = $Category->to_array();
+
+                if (isset($category_data['color']) && $category_data['color'] !== '') {
+                    $colors[] = $category_data['color'];
+                    $out['category_color_'.$Category->categorySlug()] = $category_data['color'];
+                }
+
                 // for template
                 $out[$Category->categorySlug()] = true;
             }
-            
+
             $out['category_slugs'] = implode(' ', $slugs);
             $out['category_names'] = implode(', ', $names);
+
+            if (PerchUtil::count($colors)) {
+                $out['category_colors'] = implode(' ', $colors);
+                $out['category_color'] = reset($colors);
+            }
         }
 
         if (PerchUtil::count($template_ids) && in_array('eventURL', $template_ids)) {

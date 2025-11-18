@@ -6,7 +6,12 @@
     <span class="value-title" title="<perch:events id="eventDateTime" format="c" />">
     <perch:events id="eventDateTime" format="g:i " />-<perch:events id="eventEndDateTime" format="g:i " />
 </span>
-    <span class="summary <perch:events id="category_slugs" />"><perch:events id="eventTitle" /></span>
+    <span class="summary <perch:events id="category_slugs" />">
+        <svg class="event-marker" viewBox="0 0 12 12" aria-hidden="true" role="img">
+            <circle cx="6" cy="6" r="5" fill="<perch:events id="category_color" default="currentColor" />" />
+        </svg>
+        <perch:events id="eventTitle" />
+    </span>
     </a>
 
 </div>
