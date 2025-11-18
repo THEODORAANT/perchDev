@@ -33,13 +33,31 @@ class PerchShopGateway_stripe extends PerchShopGateway_default
 		return $config['live']['secret_key'];
 	}
 
-	public function get_public_api_key($config)
-	{
-		if ($config['test_mode']) {
-			return $config['test']['publishable_key'];
-		}
-		return $config['live']['publishable_key'];
-	}
+        public function get_public_api_key($config)
+        {
+                if ($config['test_mode']) {
+                        return $config['test']['publishable_key'];
+                }
+                return $config['live']['publishable_key'];
+        }
+
+        private function build_redirect_url($url)
+        {
+                if (filter_var($url, FILTER_VALIDATE_URL)) {
+                        return $url;
+                }
+
+                $scheme = 'http';
+
+                if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443)) {
+                        $scheme = 'https';
+                }
+
+                $host = $_SERVER['HTTP_HOST'] ?? '';
+                $path = '/' . ltrim($url, '/');
+
+                return $scheme . '://' . $host . $path;
+        }
 
 	public function get_card_address($Order)
 	{
@@ -112,9 +130,11 @@ class PerchShopGateway_stripe extends PerchShopGateway_default
         $product_name = ' Order #' . $Order->id();
             $config = PerchShop_Config::get('gateways', $this->slug);
     	//	$opts = array_merge($opts, $payment_opts);
-    	$stripe_secret_key = $this->get_api_key($config);
-        $success_url ="https://".$_SERVER['HTTP_HOST'].$opts['return_url']."?session_id={CHECKOUT_SESSION_ID}";
-        $cancel_url ="https://".$_SERVER['HTTP_HOST'].$opts['cancel_url'];
+        $stripe_secret_key = $this->get_api_key($config);
+
+        $success_base_url = $this->build_redirect_url($opts['return_url']);
+        $success_url = $success_base_url . (strpos($success_base_url, '?') === false ? '?' : '&') . 'session_id={CHECKOUT_SESSION_ID}';
+        $cancel_url = $this->build_redirect_url($opts['cancel_url']);
 
 
         // Create Checkout Session via cURL
@@ -195,8 +215,9 @@ return $result;
               curl_close($ch);
 
               $session = json_decode($response, true);
-              $opts['success_url'] ="https://".$_SERVER['HTTP_HOST'].$opts['success_url']."?session_id={CHECKOUT_SESSION_ID}";
-              $opts['cancel_url'] ="https://".$_SERVER['HTTP_HOST'].$opts['cancel_url'];
+              $opts['success_url'] = $this->build_redirect_url($opts['success_url']);
+              $opts['success_url'] .= (strpos($opts['success_url'], '?') === false ? '?' : '&') . 'session_id={CHECKOUT_SESSION_ID}';
+              $opts['cancel_url'] = $this->build_redirect_url($opts['cancel_url']);
               // Check session payment status
               if ($session && isset($session['payment_status']) && $session['payment_status'] === 'paid') {
                   // Success: mark order as paid in your system
