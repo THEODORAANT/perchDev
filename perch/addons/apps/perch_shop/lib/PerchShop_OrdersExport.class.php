@@ -164,6 +164,16 @@ class PerchShop_OrdersExport
 		
 	}
 
+	public function log_user_actions()
+	{
+		return false;
+	}
+
+	public function ready_to_log_resources()
+	{
+		return false;
+	}
+
 
 
 

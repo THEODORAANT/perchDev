@@ -96,5 +96,5 @@
     } 
 
     if (PerchDB::$driver!='PDO') {
-    	$message = $HTML->failure_message('Export requires the PHP PDO library for connecting to your database.');
+    	$message = $HTML->failure_message($Lang->get('Export requires the PHP PDO library for connecting to your database.'));
     }
