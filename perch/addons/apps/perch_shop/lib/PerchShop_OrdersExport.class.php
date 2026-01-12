@@ -15,7 +15,11 @@ class PerchShop_OrdersExport
 	public function __construct($api)
 	{
 		$this->api = $api;
-		$this->db  = PerchDB::fetch();
+		if (!class_exists('PDO') || PerchDB::$driver === 'MySQLi') {
+			$this->db = new PerchDB_MySQLi();
+		} else {
+			$this->db = PerchDB::fetch();
+		}
 	}
 
 	public function populate($opts)
