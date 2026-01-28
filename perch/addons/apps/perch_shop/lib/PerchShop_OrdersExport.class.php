@@ -12,14 +12,12 @@ class PerchShop_OrdersExport
 
 	private $options;
 
+	private $db;
+
 	public function __construct($api)
 	{
 		$this->api = $api;
-		if (!class_exists('PDO') || PerchDB::$driver === 'MySQLi') {
-			$this->db = new PerchDB_MySQLi();
-		} else {
-			$this->db = PerchDB::fetch();
-		}
+		$this->db  = PerchDB::fetch();
 	}
 
 	public function populate($opts)
@@ -168,16 +166,6 @@ class PerchShop_OrdersExport
 		
 	}
 
-	public function log_user_actions()
-	{
-		return false;
-	}
-
-	public function ready_to_log_resources()
-	{
-		return false;
-	}
-
 
 
 
@@ -314,4 +302,6 @@ class PerchShop_OrdersExport
 	public function id() {}
 
 	public function ready_to_log_resources() { return false; }
+
+	public function log_user_actions() {}
 }

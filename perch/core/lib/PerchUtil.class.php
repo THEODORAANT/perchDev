@@ -817,6 +817,21 @@
 
 		public static function urlify_non_translit($string)
 		{
+
+		  $replacements = [
+                                        'Å' => 'A',
+                                        'å' => 'a',
+                                        'Ä' => 'A',
+                                        'ä' => 'a',
+                                        'Ö' => 'O',
+                                        'ö' => 'o',
+                                ];
+
+                                if (function_exists('strtr')) {
+                                        $string = strtr($string, $replacements);
+                                }
+
+                                $s = strtolower($string);
 			$s = strtolower($string);
 			$s = preg_replace('/[^a-z0-9\s]/', '', $s);
 			$s = trim($s);

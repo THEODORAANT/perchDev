@@ -121,6 +121,7 @@ abstract class AbstractCsv implements JsonSerializable, IteratorAggregate
      *
      * @return SplFileObject
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $iterator = $this->path;

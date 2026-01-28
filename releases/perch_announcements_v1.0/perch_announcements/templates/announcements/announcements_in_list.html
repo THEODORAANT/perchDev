@@ -1,0 +1,32 @@
+<perch:before>
+    <ul class="announcement-list"></perch:before>
+
+
+<!-- Property Card 1 -->
+<li class="announcement-item">
+<div class="property-card">
+
+    <div class="property-details">
+
+
+        <h2><perch:announcements id="announcementTitle" /></h2>
+        <p >  <perch:announcements id="announcementCreatedDate" /></p>
+        <p class="description">     <perch:announcements id="announcementContent" type="textarea" textile="true" html="true" /></p>
+        <a href="announcement.php?s=<perch:announcements id="announcementID" type="hidden" />" class="details-button">View Details</a>
+    </div>
+</div></li>
+<perch:after>
+    </ul>
+    <perch:if exists="paging">
+        <div class="paging">
+            Page <perch:announcements id="current_page" /> of <perch:announcements id="number_of_pages" />
+            <perch:announcements id="page_links" encode="false" />
+            <perch:if exists="not_first_page">
+                <a href="<perch:announcements id="prev_url" encode="false" />">Previous</a>
+            </perch:if>
+            <perch:if exists="not_last_page">
+                <a href="<perch:announcements id="next_url" encode="false" />">Next</a>
+            </perch:if>
+        </div>
+    </perch:if>
+</perch:after>

@@ -96,10 +96,9 @@ class PerchShop_Product extends PerchShop_Base
         if ($this->has_variants()) {
             $out['has_variants'] = true;
             $out['_variant_opts'] = $this->get_variant_select_opts();
-
+  $out['_variant_images'] = $this->get_variant_images();
             $out['options'] = $this->get_variant_opts();
         }
-
         if (isset($out['regular_pricing'])) {
             $out['current_price'] = $out['price'];
 
@@ -149,7 +148,37 @@ class PerchShop_Product extends PerchShop_Base
         return $Options->get_for_product_template($this->id());
     }
 
+ public function get_variant_images(){
+        if (!$this->has_variants()) {
+            return [];
+        }
 
+        $variants = $this->get_variants();
+        if (!PerchUtil::count($variants)) {
+            return [];
+        }
+
+        $images = [];
+
+        foreach ($variants as $Variant) {
+            $fields = PerchUtil::json_safe_decode($Variant->productDynamicFields(), true);
+            if (!isset($fields['variant_images']) || !is_array($fields['variant_images'])) {
+                continue;
+            }
+
+            foreach ($fields['variant_images'] as $image) {
+                if (!isset($image['variant_images']) || !is_array($image['variant_images'])) {
+                    continue;
+                }
+                $item['variant_image'] = $image['variant_images']['_default'];
+
+               $images[] = $item;
+            }
+        }
+
+//return implode(',', $images);
+        return $images;
+}
     public function get_variant_select_opts()
     {
         $sql = 'SELECT productID, productVariantDesc, stock_level FROM '.$this->table.'
