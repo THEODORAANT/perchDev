@@ -1197,7 +1197,7 @@ class PerchFactory
                     if ($count) $sql .= ', '.$count;
                 }
             }
-
+echo $sql;
             $rows = $this->db->get_rows($sql);
 
             if (is_object($Paging)) {

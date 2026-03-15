@@ -68,7 +68,7 @@
     }
 
     function perch_blog_post($id_or_slug, $return=false)
-    {
+    { echo "perch_blog_post";
         $id_or_slug = rtrim($id_or_slug, '/');
 
         $opts = array(
@@ -82,7 +82,7 @@
             $opts['match']  = 'eq';
             $opts['value']  = $id_or_slug;
         }
-
+print_r($opts);
         $r = perch_blog($opts, $return);
         if ($return) return $r;
         echo $r;
@@ -541,7 +541,7 @@
         if (isset($opts['pagination_var'])) $opts['pagination-var'] = $opts['pagination_var'];
 
         $r = $BlogPosts->get_custom($opts);
-
+print_r( $r);
     	if ($return) return $r;
 
     	echo $r;

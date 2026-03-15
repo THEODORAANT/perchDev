@@ -162,8 +162,8 @@ class PerchBlog_Posts extends PerchAPI_Factory
         if (!isset($data['postDateTime'])) $data['postDateTime'] = date('Y-m-d H:i:s');
 
         if (isset($data['postTitle']) && !isset($data['postSlug'])) {
-            $data['postSlug'] = PerchUtil::urlify(date('Y m d', strtotime($data['postDateTime'])). ' ' . $data['postTitle']);
-
+            //$data['postSlug'] = PerchUtil::urlify(date('Y m d', strtotime($data['postDateTime'])). ' ' . $data['postTitle']);
+            $data['postSlug'] = PerchUtil::urlify(date('Y-m-d', strtotime($data['postDateTime'])) . '-' . $data['postTitle']);
         }
 
         if (isset($data['cat_ids']) && is_array($data['cat_ids'])) {
@@ -359,7 +359,7 @@ class PerchBlog_Posts extends PerchAPI_Factory
             return $template;
         };
 
-
+print_r( $opts);
         return $this->get_filtered_listing($opts, $where_callback, $pre_template_callback);
     }
 
