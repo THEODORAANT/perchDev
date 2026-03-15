@@ -162,8 +162,36 @@ class PerchBlog_Posts extends PerchAPI_Factory
         if (!isset($data['postDateTime'])) $data['postDateTime'] = date('Y-m-d H:i:s');
 
         if (isset($data['postTitle']) && !isset($data['postSlug'])) {
-            //$data['postSlug'] = PerchUtil::urlify(date('Y m d', strtotime($data['postDateTime'])). ' ' . $data['postTitle']);
-            $data['postSlug'] = PerchUtil::urlify(date('Y-m-d', strtotime($data['postDateTime'])) . '-' . $data['postTitle']);
+            $API  = new PerchAPI(1.0, 'perch_blog');
+            $Settings = $API->get('Settings');
+            $format = $Settings->get('perch_blog_slug_format')->val();
+            if (!$format) {
+                $format = 'Y-m-d-{postTitle}';
+            }
+
+            $timestamp = strtotime($data['postDateTime']);
+            $url_vars = $data;
+
+            $tokens = array();
+            $slug_format = $format;
+
+            if (preg_match_all('/{([A-Za-z0-9_\-]+)}/', $format, $matches)) {
+                foreach($matches[1] as $i => $match) {
+                    $key = '@@'.$i.'@@';
+                    $tokens[$key] = (isset($url_vars[$match]) ? $url_vars[$match] : '');
+                    $slug_format = str_replace($matches[0][$i], $key, $slug_format);
+                }
+            }
+
+            $slug = date($slug_format, $timestamp);
+
+            if (PerchUtil::count($tokens)) {
+                foreach($tokens as $key => $value) {
+                    $slug = str_replace($key, $value, $slug);
+                }
+            }
+
+            $data['postSlug'] = PerchUtil::urlify($slug);
         }
 
         if (isset($data['cat_ids']) && is_array($data['cat_ids'])) {
@@ -359,7 +387,7 @@ class PerchBlog_Posts extends PerchAPI_Factory
             return $template;
         };
 
-print_r( $opts);
+
         return $this->get_filtered_listing($opts, $where_callback, $pre_template_callback);
     }
 
