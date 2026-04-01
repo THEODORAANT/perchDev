@@ -1,7 +1,7 @@
 {
 	"js": [
 		"PERCH_LOGINPATH/addons/plugins/editors/ckeditor/perch/env.js",
-		"PERCH_LOGINPATH/addons/plugins/editors/ckeditor/ckeditor-4/ckeditor.js",
+		"https://cdn.ckeditor.com/4.24.0-lts/standard-all/ckeditor.js",
 		"PERCH_LOGINPATH/addons/plugins/editors/ckeditor/perch/config.js"
 	],
 	"css": [
