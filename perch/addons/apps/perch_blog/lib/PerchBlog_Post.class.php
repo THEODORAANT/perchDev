@@ -31,7 +31,7 @@ class PerchBlog_Post extends PerchAPI_Base
                     $this->_load_author();
                 }
                 if (is_object($this->Author)) {
-                    return $this->Author->$field();
+                    return $this->Author->$method();
                 }
             }
 
@@ -219,8 +219,6 @@ $timestamp = strtotime($data['postDateTime']);
                 $out = array_merge($dynamic_fields, $out);
             }
         }
-        print_r($out);
-
         $out['postURL'] = $this->postURL();
         $out['postURLFull'] = $this->postURL(true);
 
@@ -493,4 +491,3 @@ $timestamp = strtotime($data['postDateTime']);
     }
 
 }
-
