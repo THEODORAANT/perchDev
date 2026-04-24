@@ -1,5 +1,8 @@
 $(function() {
 
+	CKEDITOR.plugins.addExternal('perchai', Perch.path + '/addons/plugins/editors/ckeditor/perch/ai/', 'plugin.js');
+	CKEDITOR.config.extraPlugins = (CKEDITOR.config.extraPlugins ? CKEDITOR.config.extraPlugins + ',' : '') + 'perchai';
+
 	var set_up_ckeditor = function() {
 
 		$('.ckeditor').removeClass('ckeditor').addClass('perch-ckeditor');
